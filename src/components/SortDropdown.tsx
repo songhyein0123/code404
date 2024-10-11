@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface SortOption {
     label: string;
     value: string;
@@ -13,5 +15,7 @@ interface SortDropdownProps {
 }
 
 export default function SortDropdown({ onSortChange }: SortDropdownProps) {
+    const [selectedOption, setSelectedOption] = useState(sortOptions[0].value);
+
     return <div>SortDropdown</div>;
 }
