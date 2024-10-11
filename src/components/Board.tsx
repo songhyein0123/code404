@@ -42,22 +42,24 @@ export default function Board() {
     };
 
     return (
-        <div>
+        <div className="p-4 max-w-3xl mx-auto">
             {/* 게시글 목록 */}
             {paginatedPosts.map((post) => (
-                <div key={post.id}>
-                    <div>{post.title}</div>
-                    <div>
+                <div key={post.id} className="mb-6 border-b pb-4 last:border-none">
+                    <div className="text-xl font-bold text-gray-800 mb-2">{post.title}</div>
+                    <div className="text-sm text-gray-600 space-x-2">
                         <span>{post.author}</span> | <span>{post.date}</span> |
                         {post.hashtags.slice(0, 3).map((tag, idx) => (
-                            <span key={idx}>{tag}</span>
+                            <span key={idx} className="text-blue-600">
+                                {tag}
+                            </span>
                         ))}
                     </div>
                 </div>
             ))}
 
             {/* 페이지네이션 */}
-            <div>
+            <div className="flex justify-center mt-6 space-x-2">
                 {/* 이전 페이지 버튼 */}
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
