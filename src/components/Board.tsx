@@ -157,14 +157,15 @@ const PostsPerPage = 5;
 
 export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
+    const [sortOrder, setSortOrder] = useState("latest");
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
 
     const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
-    const handlePageChange = (page: number) => {
-        // 페이지가 변경될 때, currentPage 상태를 업데이트
-        setCurrentPage(page);
+    // 정렬 로직 추가: 최신순 또는 좋아요 순으로 정렬
+    const handleSortChange = (value: string) => {
+        setSortOrder(value);
     };
 
     return (
