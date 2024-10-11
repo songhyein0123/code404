@@ -21,7 +21,7 @@ export function Search({ onSearch }: SearchProps) {
                 placeholder="검색어를 입력하세요."
                 className="border rounded-1 px-2 py-1"
             />
-            <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-1 rounded-r">
+            <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-1 rounded-r-md">
                 검색
             </button>
         </div>
