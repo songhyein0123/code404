@@ -194,7 +194,15 @@ export default function Board() {
                         currentPage === 1 ? "bg-gray-300 text-gray-500" : "bg-gray-200 text-gray-800"
                     }`}
                 >
-                    이전
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
                 </button>
 
                 {/* 페이지 번호 버튼 */}
@@ -218,7 +226,15 @@ export default function Board() {
                         currentPage === totalPages ? "bg-gray-300 text-gray-500" : "bg-gray-200 text-gray-800"
                     }`}
                 >
-                    다음
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                 </button>
             </div>
         </div>
