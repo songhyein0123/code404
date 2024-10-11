@@ -25,12 +25,19 @@ const mockPosts: Post[] = [
     }
 ];
 
+const PostsPerPage = 5;
+
 export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
+    const totalPosts = mockPosts.length;
+    const totalPages = Math.ceil(totalPosts / PostsPerPage);
+
+    const paginatedPosts = mockPosts.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
+
     return (
         <div>
             {/* 게시글 목록 */}
-            {pagenatedPosts.map((post) => (
+            {paginatedPosts.map((post) => (
                 <div key={post.id}>
                     <div>{post.title}</div>
                     <div>
