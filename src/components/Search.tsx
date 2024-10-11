@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// Search 컴포넌트 props의 타입을 인터페이스로 정의
 interface SearchProps {
     onSearch: (searchTerm: string) => void;
 }
@@ -8,6 +9,7 @@ export function Search({ onSearch }: SearchProps) {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = () => {
+        // 입력되 검색어를 부모 컴포넌트로 전달
         onSearch(searchTerm);
     };
     return (
