@@ -163,6 +163,13 @@ export default function Board() {
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
 
+    // 페이지 변경 함수
+    const handlePageChange = (page: number) => {
+        // 페이지 범위를 벗어나면 아무 것도 하지 않음
+        if (page < 1 || page > totalPages) return;
+        setCurrentPage(page);
+    };
+
     const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
     // 정렬 로직 추가: 최신순 또는 좋아요 순으로 정렬
