@@ -10,7 +10,7 @@ interface Post {
     hashtags: string[];
 }
 
-const mockPosts: Post[] = [
+const mock_data: Post[] = [
     {
         id: 1,
         title: "TypeScript를 시작하는 방법",
@@ -157,10 +157,10 @@ const PostsPerPage = 5;
 
 export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPosts = mockPosts.length;
+    const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
 
-    const paginatedPosts = mockPosts.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
+    const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
     const handlePageChange = (page: number) => {
         // 페이지가 변경될 때, currentPage 상태를 업데이트
