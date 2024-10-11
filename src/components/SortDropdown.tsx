@@ -17,5 +17,19 @@ interface SortDropdownProps {
 export default function SortDropdown({ onSortChange }: SortDropdownProps) {
     const [selectedOption, setSelectedOption] = useState(sortOptions[0].value);
 
-    return <div>SortDropdown</div>;
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setSelectedOption(value);
+        onSortChange(value);
+    };
+
+    return (
+        <select value={selectedOption} onChange={handleChange} className="border rounded-md p-2 mr-4">
+            {sortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
+        </select>
+    );
 }
