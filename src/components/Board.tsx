@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import SortDropdown from "./SortDropdown";
+import { Search } from "./Search";
 
 interface Post {
     id: number;
@@ -170,6 +172,11 @@ export default function Board() {
 
     return (
         <div className="p-4 max-w-3xl mx-auto">
+            {/* 드롭 박스와 검색 컴포넌트 */}
+            <div>
+                <SortDropdown onSortChange={handleSortChange} />
+                <Search onSearch={(query) => console.log(query)} />
+            </div>
             {/* 게시글 목록 */}
             {paginatedPosts.map((post) => (
                 <div key={post.id} className="mb-6 border-b pb-4 last:border-none">
