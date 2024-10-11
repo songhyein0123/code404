@@ -180,7 +180,7 @@ export default function Board() {
     return (
         <div className="p-4 max-w-3xl mx-auto">
             {/* 드롭 박스와 검색 컴포넌트 */}
-            <div>
+            <div className="flex justify-between mb-4 h-10">
                 <SortDropdown onSortChange={handleSortChange} />
                 <Search onSearch={(query) => console.log(query)} />
             </div>
