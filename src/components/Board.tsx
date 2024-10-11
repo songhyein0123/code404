@@ -48,7 +48,10 @@ export default function Board() {
                 <div key={post.id}>
                     <div>{post.title}</div>
                     <div>
-                        <span>{post.author}</span> | <span>{post.date}</span> | <span key={idx}>{tag}</span>
+                        <span>{post.author}</span> | <span>{post.date}</span> |
+                        {post.hashtags.slice(0, 3).map((tag, idx) => (
+                            <span key={idx}>{tag}</span>
+                        ))}
                     </div>
                 </div>
             ))}
