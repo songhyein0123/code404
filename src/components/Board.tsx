@@ -34,6 +34,11 @@ export default function Board() {
 
     const paginatedPosts = mockPosts.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
+    const handlePageChange = (page: number) => {
+        // 페이지가 변경될 때, currentPage 상태를 업데이트
+        setCurrentPage(page);
+    };
+
     return (
         <div>
             {/* 게시글 목록 */}
@@ -45,6 +50,20 @@ export default function Board() {
                     </div>
                 </div>
             ))}
+
+            {/* 페이지네이션 */}
+            <div>
+                {/* 이전 페이지 버튼 */}
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded ${
+                        currentPage === 1 ? "bg-gray-300 text-gray-500" : "bg-gray-200 text-gray-800"
+                    }`}
+                >
+                    이전
+                </button>
+            </div>
         </div>
     );
 }
