@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 export default function Board() {
+    const [currentPage, setCurrentPage] = useState(1);
     return (
         <div>
             {/* 게시글 목록 */}
