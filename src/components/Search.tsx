@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-interface SearchComponentProps {
-    onSearch: (term: string) => void;
+interface SearchProps {
+    onSearch: (searchTerm: string) => void;
 }
 
-export function Search({ onSearch }: SearchComponentProps) {
+export function Search({ onSearch }: SearchProps) {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = () => {
