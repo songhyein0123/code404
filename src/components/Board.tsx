@@ -156,10 +156,12 @@ const mock_data: Post[] = [
 ];
 
 const PostsPerPage = 5;
+const availableTags = ["Next.js", "TypeScript", "JavaScript", "CSS", "React"];
 
 export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOrder, setSortOrder] = useState("latest");
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
 
@@ -177,12 +179,46 @@ export default function Board() {
         setSortOrder(value);
     };
 
+    const handleTagChange = (tag: string) => {
+        setSelectedTags((prevTags) =>
+            prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [...prevTags, tag]
+        );
+    };
+
     return (
         <div className="p-4 max-w-3xl mx-auto">
             {/* 드롭 박스와 검색 컴포넌트 */}
             <div className="flex justify-between mb-4 h-10">
                 <SortDropdown onSortChange={handleSortChange} />
                 <Search onSearch={(query) => console.log(query)} />
+            </div>
+
+            {/* 필터 체크박스와 글쓰기 버튼 */}
+            <div>
+                <div>
+                    <label>필터: </label>
+                    <div>
+                        <button>언어 선택</button>
+                        <div>
+                            {availableTags.map((tag) => (
+                                <div key={tag}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedTags.includes(tag)}
+                                            onChange={() => handleTagChange(tag)}
+                                            className="mr-2"
+                                        />
+                                        {tag}
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 글쓰기 버튼 */}
+                <button>글쓰기</button>
             </div>
             {/* 게시글 목록 */}
             {paginatedPosts.map((post) => (
