@@ -216,17 +216,20 @@ export default function Board() {
             {/* 필터 체크박스와 글쓰기 버튼 */}
             <div className="flex justify-between items-center mb-4">
                 {/* 체크박스 드롭다운 필터 */}
-                <div>
-                    <button onClick={toggleDropdown}>언어 선택</button>
+                <div className="relative">
+                    <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded" onClick={toggleDropdown}>
+                        언어 선택
+                    </button>
                     {isDropdownOpen && (
-                        <div>
+                        <div className="absolute mt-2 bg-white border rounded shadlw-lg">
                             {availableTags.map((tag) => (
-                                <div key={tag}>
-                                    <label>
+                                <div key={tag} className="px-4 py-2">
+                                    <label className="flex item-center">
                                         <input
                                             type="checkbox"
                                             checked={selectedTags.includes(tag)}
                                             onChange={() => handleTagChange(tag)}
+                                            className="mr-2"
                                         />
                                     </label>
                                 </div>
