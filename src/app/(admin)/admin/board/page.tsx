@@ -46,6 +46,20 @@ const fetchTotalPosts = async (): Promise<number> => {
     return count || 0;
 };
 
+const togglePostVisibility = async ({
+    boardId,
+    currentStatus
+}: {
+    boardId: number;
+    currentStatus: boolean;
+}): Promise<void> => {
+    const supabase = createClient();
+    const { error } = await supabase.from("Post").update({ publicStatus: !currentStatus }).eq("board_id", boardId);
+    if (error) {
+        throw new Error(error.message);
+    }
+};
+
 const PostPage = () => {
     const [page, setPage] = useState(1); // 현재 페이지 번호
     const queryClient = useQueryClient();
@@ -64,6 +78,14 @@ const PostPage = () => {
         mutationFn: deletePost,
         onSuccess: () => {
             // 삭제 후 게시글 목록을 다시 가져오기 위한 쿼리 무효화
+            queryClient.invalidateQueries({ queryKey: ["posts", page] });
+        }
+    });
+
+    const toggleVisibilityMutation = useMutation<void, Error, { boardId: number; currentStatus: boolean }>({
+        mutationFn: togglePostVisibility, // togglePostVisibility 함수
+        onSuccess: () => {
+            // 공개/비공개 변경 후 게시글 목록을 다시 가져오기 위한 쿼리 무효화
             queryClient.invalidateQueries({ queryKey: ["posts", page] });
         }
     });
@@ -108,7 +130,15 @@ const PostPage = () => {
                         </div>
 
                         <div className="flex space-x-2 self-center">
-                            <button className="bg-gray-500 text-white p-2 rounded">
+                            <button
+                                className="bg-gray-500 text-white p-2 rounded"
+                                onClick={() =>
+                                    toggleVisibilityMutation.mutate({
+                                        boardId: post.board_id,
+                                        currentStatus: post.publicStatus
+                                    })
+                                }
+                            >
                                 {post.publicStatus ? "비공개" : "공개"}
                             </button>
                             <button
