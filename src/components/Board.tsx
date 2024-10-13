@@ -162,6 +162,7 @@ export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOrder, setSortOrder] = useState("latest");
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
 
@@ -185,6 +186,10 @@ export default function Board() {
         );
     };
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
     return (
         <div className="p-4 max-w-3xl mx-auto">
             {/* 드롭 박스와 검색 컴포넌트 */}
@@ -193,33 +198,6 @@ export default function Board() {
                 <Search onSearch={(query) => console.log(query)} />
             </div>
 
-            {/* 필터 체크박스와 글쓰기 버튼 */}
-            <div className="flex justify-between items-center mb-4">
-                <div className="flex items-center space-x-4">
-                    <label className="font-semibold">필터: </label>
-                    <div className="relative">
-                        <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded">언어 선택</button>
-                        <div className="absolute mt-2 bg-white border rounded shadow-lg">
-                            {availableTags.map((tag) => (
-                                <div key={tag} className="px-4 py-2">
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedTags.includes(tag)}
-                                            onChange={() => handleTagChange(tag)}
-                                            className="mr-2"
-                                        />
-                                        {tag}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* 글쓰기 버튼 */}
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">글쓰기</button>
-            </div>
             {/* 게시글 목록 */}
             {paginatedPosts.map((post) => (
                 <div key={post.id} className="mb-6 border-b pb-4 last:border-none">
@@ -234,6 +212,32 @@ export default function Board() {
                     </div>
                 </div>
             ))}
+
+            {/* 필터 체크박스와 글쓰기 버튼 */}
+            <div className="flex justify-between items-center mb-4">
+                {/* 체크박스 드롭다운 필터 */}
+                <div>
+                    <button onClick={toggleDropdown}>언어 선택</button>
+                    {isDropdownOpen && (
+                        <div>
+                            {availableTags.map((tag) => (
+                                <div key={tag}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedTags.includes(tag)}
+                                            onChange={() => handleTagChange(tag)}
+                                        />
+                                    </label>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* 글쓰기 버튼 */}
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">글쓰기</button>
+            </div>
 
             {/* 페이지네이션 */}
             <div className="flex justify-center mt-6 space-x-2">
