@@ -194,15 +194,15 @@ export default function Board() {
             </div>
 
             {/* 필터 체크박스와 글쓰기 버튼 */}
-            <div>
-                <div>
-                    <label>필터: </label>
-                    <div>
-                        <button>언어 선택</button>
-                        <div>
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center space-x-4">
+                    <label className="font-semibold">필터: </label>
+                    <div className="relative">
+                        <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded">언어 선택</button>
+                        <div className="absolute mt-2 bg-white border rounded shadow-lg">
                             {availableTags.map((tag) => (
-                                <div key={tag}>
-                                    <label>
+                                <div key={tag} className="px-4 py-2">
+                                    <label className="flex items-center">
                                         <input
                                             type="checkbox"
                                             checked={selectedTags.includes(tag)}
@@ -218,7 +218,7 @@ export default function Board() {
                 </div>
 
                 {/* 글쓰기 버튼 */}
-                <button>글쓰기</button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">글쓰기</button>
             </div>
             {/* 게시글 목록 */}
             {paginatedPosts.map((post) => (
