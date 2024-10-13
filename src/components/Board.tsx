@@ -156,7 +156,6 @@ const mock_data: Post[] = [
 ];
 
 const PostsPerPage = 5;
-const availableTags = ["Next.js", "TypeScript", "JavaScript", "CSS", "React"];
 
 export default function Board() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -190,6 +189,8 @@ export default function Board() {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const allHashtags = Array.from(new Set(mock_data.flatMap((post) => post.hashtags)));
+
     return (
         <div className="p-4 max-w-3xl mx-auto">
             {/* 드롭 박스와 검색 컴포넌트 */}
@@ -222,7 +223,7 @@ export default function Board() {
                     </button>
                     {isDropdownOpen && (
                         <div className="absolute mt-2 bg-white border rounded shadlw-lg">
-                            {availableTags.map((tag) => (
+                            {allHashtags.map((tag) => (
                                 <div key={tag} className="px-4 py-2">
                                     <label className="flex item-center">
                                         <input
@@ -231,6 +232,7 @@ export default function Board() {
                                             onChange={() => handleTagChange(tag)}
                                             className="mr-2"
                                         />
+                                        <span className="text-gray-700">{tag}</span>
                                     </label>
                                 </div>
                             ))}
