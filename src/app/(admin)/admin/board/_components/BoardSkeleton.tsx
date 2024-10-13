@@ -9,7 +9,7 @@ const Skeleton = () => {
                 </div>
             </div>
             <div className="flex space-x-2 self-center">
-                <div className="h-10 bg-green-400 rounded w-20"></div>
+                <div className="h-10 bg-gray-500 rounded w-20"></div>
                 <div className="h-10 bg-red-400 rounded w-20"></div>
             </div>
         </div>

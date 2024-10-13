@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/utils/supabase/client";
 import { PostType } from "@/types/Post";
 import { useState } from "react";
@@ -14,6 +14,7 @@ const fetchPosts = async (page: number): Promise<PostType[]> => {
     const { data, error } = await supabase
         .from("Post")
         .select(`* , user_id(*)`)
+        .order("board_id", { ascending: true })
         .range((page - 1) * pageSize, page * pageSize - 1);
 
     if (error) {
@@ -21,6 +22,16 @@ const fetchPosts = async (page: number): Promise<PostType[]> => {
     }
 
     return data;
+};
+
+//게시글을 삭제하는 함수
+const deletePost = async (board_id: number) => {
+    const supabase = createClient();
+    const { error } = await supabase.from("Post").delete().eq("board_id", board_id); // board_id 기준으로 게시글 삭제
+
+    if (error) {
+        throw new Error(error.message);
+    }
 };
 
 // 총 게시글 수만 가져오기 위한 함수
@@ -37,6 +48,7 @@ const fetchTotalPosts = async (): Promise<number> => {
 
 const PostPage = () => {
     const [page, setPage] = useState(1); // 현재 페이지 번호
+    const queryClient = useQueryClient();
 
     // 게시글 가져오기
     const {
@@ -46,6 +58,14 @@ const PostPage = () => {
     } = useQuery<PostType[], Error>({
         queryKey: ["posts", page],
         queryFn: () => fetchPosts(page) // 페이지 번호 별로 게시글 가져옴
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: deletePost,
+        onSuccess: () => {
+            // 삭제 후 게시글 목록을 다시 가져오기 위한 쿼리 무효화
+            queryClient.invalidateQueries({ queryKey: ["posts", page] });
+        }
     });
 
     // 총 게시글 수 가져오기
@@ -88,10 +108,15 @@ const PostPage = () => {
                         </div>
 
                         <div className="flex space-x-2 self-center">
-                            <button className="bg-green-500 text-white p-2 rounded">
+                            <button className="bg-gray-500 text-white p-2 rounded">
                                 {post.publicStatus ? "비공개" : "공개"}
                             </button>
-                            <button className="bg-red-500 text-white p-2 rounded">삭제</button>
+                            <button
+                                className="bg-red-500 text-white p-2 rounded"
+                                onClick={() => deleteMutation.mutate(post.board_id)}
+                            >
+                                삭제
+                            </button>
                         </div>
                     </div>
                 ))}
@@ -101,7 +126,7 @@ const PostPage = () => {
                     <button
                         disabled={page === 1}
                         onClick={() => setPage(1)}
-                        className="p-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                        className="p-2 bg-gray-500 text-white rounded disabled:opacity-50"
                     >
                         &lt;&lt;
                     </button>
@@ -109,7 +134,7 @@ const PostPage = () => {
                     <button
                         disabled={page === 1}
                         onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                        className="p-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                        className="p-2 bg-gray-500 text-white rounded disabled:opacity-50"
                     >
                         &lt;
                     </button>
@@ -126,14 +151,14 @@ const PostPage = () => {
                     <button
                         disabled={page === totalPages}
                         onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-                        className="p-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                        className="p-2 bg-gray-500 text-white rounded disabled:opacity-50"
                     >
                         &gt;
                     </button>
                     <button
                         disabled={page === totalPages}
                         onClick={() => setPage(totalPages)}
-                        className="p-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                        className="p-2 bg-gray-500 text-white rounded disabled:opacity-50"
                     >
                         &gt;&gt;
                     </button>
