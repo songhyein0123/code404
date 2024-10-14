@@ -24,6 +24,15 @@ export default function NewPostPage() {
         markdownContent: ""
     });
 
+    // 해시태그 삭제 함수
+    const removeTag = (tagToRemove: string) => {
+        setState((prevState) => ({
+            ...prevState,
+            // 선택된 해시태그 제거
+            hashtags: prevState.hashtags.filter((tag) => tag !== tagToRemove)
+        }));
+    };
+
     return (
         <div>
             {/* 제목 입력 */}
