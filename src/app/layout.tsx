@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navibar from "./components/Navibar";
 import Providers from "./providers";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -28,8 +29,11 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <Navibar />
-                <Providers>{children}</Providers>
+                <Providers>
+                    <Navibar />
+                    {children}
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </Providers>
             </body>
         </html>
     );
