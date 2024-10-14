@@ -2,10 +2,27 @@
 
 import { useState } from "react";
 
+// 인터페이스 정의
+interface PostPageState {
+    title: string;
+    hashtags: string[];
+    currentTag: string;
+    markdownContent: string;
+}
+
+interface ChangeEvent {
+    currentTarget: {
+        value: string;
+    };
+}
+
 export default function NewPostPage() {
-    const [title, setTitle] = useState("");
-    const [hashtags, setHashtags] = useState<string[]>([]);
-    const [currentTag, setCurrentTag] = useState("");
+    const [state, setState] = useState<PostPageState>({
+        title: "",
+        hashtags: [],
+        currentTag: "",
+        markdownContent: ""
+    });
     return (
         <div>
             {/* 제목 입력 */}
