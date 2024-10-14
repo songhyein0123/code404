@@ -2,6 +2,7 @@
 
 import { AccountInfo } from "@/app/types/Account";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function signup(data: AccountInfo) {
     const { email, password } = data;
@@ -20,4 +21,14 @@ export async function signup(data: AccountInfo) {
 export async function signout() {
     const supabase = createClient();
     await supabase.auth.signOut();
+}
+
+export async function getUser() {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.getUser();
+
+    // TODO: - 에러 핸들링
+
+    return data;
 }
