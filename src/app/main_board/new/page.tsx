@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor as ToastEditor } from "@toast-ui/react-editor";
 
 // 인터페이스 정의
 interface PostPageState {
@@ -29,7 +30,7 @@ export default function NewPostPage() {
     });
 
     // 에디터 참조
-    const editorRef = useRef<any>(null);
+    const editorRef = useRef<ToastEditor | null>(null);
 
     // 제목 입력 핸들러
     const handleTitleChange = (e: ChangeEvent) => {
