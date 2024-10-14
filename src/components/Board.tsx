@@ -172,6 +172,7 @@ export default function Board() {
         setCurrentPage(page);
     };
 
+    // 현재 페이지에 표시될 게시글을 계산
     const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
     // 정렬 로직 추가: 최신순 또는 좋아요 순으로 정렬
@@ -179,16 +180,19 @@ export default function Board() {
         setSortOrder(value);
     };
 
+    // 태그 선택/해제 함수: 선택된 태그 목록들을 업데이트
     const handleTagChange = (tag: string) => {
         setSelectedTags((prevTags) =>
             prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [...prevTags, tag]
         );
     };
 
+    // 드롭다운 열기/닫기 함수
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // 게시글의 해시태그에서 중복 없는 해시태그 목록 추출하는 함수
     const allHashtags = Array.from(new Set(mock_data.flatMap((post) => post.hashtags)));
 
     return (
