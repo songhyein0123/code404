@@ -26,12 +26,12 @@ export default function NewPostPage() {
 
     // 제목 입력 핸들러
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState((prevState) => ({ ...prevState, title: e.currentTarget.value }));
+        setState((prevState) => ({ ...prevState, title: e.target.value }));
     };
 
     // 해시태그 입력 핸들러
     const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState((prevState) => ({ ...prevState, currentTag: e.currentTarget.value }));
+        setState((prevState) => ({ ...prevState, currentTag: e.target.value }));
     };
 
     // 해시태그 입력 시 엔터 키 처리
