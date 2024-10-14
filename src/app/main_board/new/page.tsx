@@ -57,7 +57,7 @@ export default function NewPostPage() {
                     {/* 해시태그 입력 필드 */}
                     <input
                         type="text"
-                        value={currentTag}
+                        value={state.currentTag}
                         onChange={handleTagInputChange}
                         onKeyPress={handleTagKeyPress}
                         className=""
