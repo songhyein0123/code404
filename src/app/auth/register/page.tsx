@@ -46,7 +46,7 @@ const Register = () => {
         if (result.success) {
             console.log("성공");
             alert("회원가입을 축하드립니다!");
-            router.replace("/");
+            router.replace("/auth/login");
         } else {
             console.log("실패");
             alert("네트워크 오류가 발생하였습니다.");
