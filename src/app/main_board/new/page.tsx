@@ -104,23 +104,25 @@ export default function NewPostPage() {
                 <label className="block text-lg font-medium mb-2">해시태그</label>
                 <div className="flex flex-wrap items-center gap-2 border border-gray-300 p-2 rounded">
                     {/* 해시태그 배지 */}
-                    {state.hashtags.map((tag) => {
+                    {state.hashtags.map((tag) => (
                         <div key={tag} className="bg-blue-200 text-blue-700 px-2 py-1 rounded-full flex items-center">
                             {tag}
-                            <button type="button" onClick={() => removeTag(tag)} className="ml-2 text-blue-500">
+                            <button
+                                type="button"
+                                onClick={() => removeTag(tag)} // 해시태그 삭제 버튼 클릭 시
+                                className="ml-2 text-blue-500"
+                            >
                                 &times;
                             </button>
-                        </div>;
-                    })}
-
-                    {/* 해시태그 입력 필드 */}
+                        </div>
+                    ))}
                     <input
                         type="text"
                         value={state.currentTag}
                         onChange={handleTagInputChange}
                         onKeyPress={handleTagKeyPress}
                         className="flex-grow p-2 outline-none"
-                        placeholder="해시태그를 입력하고 엔터를 누르세요!"
+                        placeholder="해시태그를 입력하고 엔터를 누르세요"
                     />
                 </div>
             </div>
