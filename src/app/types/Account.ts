@@ -4,3 +4,5 @@ export type AccountInfo = {
     confirmPassword: string;
     nickname: string;
 };
+
+export type AccountLoginInfo = Pick<AccountInfo, "email" | "password">;

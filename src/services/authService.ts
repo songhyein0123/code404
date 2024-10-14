@@ -1,8 +1,8 @@
 "use server";
 
-import { AccountInfo } from "@/app/types/Account";
+import { AccountInfo, AccountLoginInfo } from "@/app/types/Account";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function signup(data: AccountInfo) {
     const { email, password } = data;
@@ -14,6 +14,20 @@ export async function signup(data: AccountInfo) {
     };
 
     const { error } = await supabase.auth.signUp(info);
+
+    return error ? { success: false, error: error.message } : { success: true };
+}
+
+export async function signin(data: AccountLoginInfo) {
+    const supabase = createClient();
+
+    const info = {
+        email: data.email as string,
+        password: data.password as string
+    };
+
+    const { error } = await supabase.auth.signInWithPassword(info);
+    revalidatePath("/layout");
 
     return error ? { success: false, error: error.message } : { success: true };
 }
