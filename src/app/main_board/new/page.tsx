@@ -1,8 +1,8 @@
 "use client";
 
-import Editor from "@toast-ui/react-editor";
-import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 // 인터페이스 정의
 interface PostPageState {
