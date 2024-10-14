@@ -13,14 +13,6 @@ interface PostPageState {
     markdownContent: string;
 }
 
-interface ChangeEvent {
-    currentTarget: {
-        value: string;
-    };
-}
-
-const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.Editor), { ssr: false });
-
 export default function NewPostPage() {
     const [state, setState] = useState<PostPageState>({
         title: "",
@@ -33,34 +25,27 @@ export default function NewPostPage() {
     const editorRef = useRef<ToastEditor | null>(null);
 
     // 제목 입력 핸들러
-    const handleTitleChange = (e: ChangeEvent) => {
-        // 제목 상태 업데이트
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setState((prevState) => ({ ...prevState, title: e.currentTarget.value }));
     };
 
-    // 해시태그 입력 함수
-    const handleTagInputChange = (e: ChangeEvent) => {
-        // 해시태그 상태 업데이트
+    // 해시태그 입력 핸들러
+    const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setState((prevState) => ({ ...prevState, currentTag: e.currentTarget.value }));
     };
 
     // 해시태그 입력 시 엔터 키 처리
     const handleTagKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        // 엔터 기와 빈 문자열이 아닐 경우
         if (state.currentTag && e.key === "Enter") {
-            // 기본 엔터 키 동작 방지
-            e.preventDefault();
-            // 해시태그 모양을 나타내는 포맷
-            const formattedTag = `#${state.currentTag.trim()}`;
+            e.preventDefault(); // 기본 엔터 키 동작 방지
+            const formattedTag = `#${state.currentTag.trim()}`; // 해시태그 포맷
             if (!state.hashtags.includes(formattedTag)) {
                 setState((prevState) => ({
                     ...prevState,
-                    // 새로운 해시태그 추가
-                    hashtags: [...prevState.hashtags, formattedTag]
+                    hashtags: [...prevState.hashtags, formattedTag], // 새로운 해시태그 추가
+                    currentTag: "" // 입력 필드 초기화
                 }));
             }
-            // 입력 필드를 초기화
-            setState((prevState) => ({ ...prevState, currentTag: "" }));
         }
     };
 
@@ -75,7 +60,6 @@ export default function NewPostPage() {
 
     // 마크다운 에디터 내용 변경 함수
     const handleEditorChange = () => {
-        // 에디터 인스턴스 가져오기
         const editorInstance = editorRef.current?.getInstance();
         if (editorInstance) {
             setState((prevState) => ({
@@ -85,6 +69,9 @@ export default function NewPostPage() {
             }));
         }
     };
+
+    // 에디터 컴포넌트 로드
+    const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.Editor), { ssr: false });
 
     return (
         <div className="container mx-auto p-4">
@@ -109,7 +96,8 @@ export default function NewPostPage() {
                             {tag}
                             <button
                                 type="button"
-                                onClick={() => removeTag(tag)} // 해시태그 삭제 버튼 클릭 시
+                                // 해시태그 삭제 버튼 클릭 시
+                                onClick={() => removeTag(tag)}
                                 className="ml-2 text-blue-500"
                             >
                                 &times;
@@ -129,7 +117,7 @@ export default function NewPostPage() {
 
             {/* 마크다운 에디터 */}
             <div className="flex">
-                <div className="">
+                <div className="flex-grow">
                     <label className="block text-lg font-medium mb-2">내용 작성</label>
                     <Editor
                         ref={editorRef}
@@ -138,7 +126,7 @@ export default function NewPostPage() {
                         height="400px"
                         initialEditType="markdown"
                         useCommandShortcut={true}
-                        onChange={handleEditorChange}
+                        onChange={handleEditorChange} // 에디터 내용 변경 시 핸들러
                     />
                 </div>
             </div>
