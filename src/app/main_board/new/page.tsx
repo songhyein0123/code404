@@ -87,27 +87,27 @@ export default function NewPostPage() {
     };
 
     return (
-        <div>
+        <div className="container mx-auto p-4">
             {/* 제목 입력 */}
-            <div>
-                <label>제목</label>
+            <div className="mb-4">
+                <label className="block text-lg font-medium mb-2">제목</label>
                 <input
                     type="text"
                     value={state.title}
                     onChange={handleTitleChange}
-                    className=""
+                    className="w-full p-2 border border-gray-300 rounded"
                     placeholder="글 제목을 입력하세요"
                 />
             </div>
             {/* 해시태그 입력 */}
-            <div>
-                <label>해시태그</label>
-                <div>
+            <div className="mb-4">
+                <label className="block text-lg font-medium mb-2">해시태그</label>
+                <div className="flex flex-wrap items-center gap-2 border border-gray-300 p-2 rounded">
                     {/* 해시태그 배지 */}
                     {state.hashtags.map((tag) => {
-                        <div key={tag}>
+                        <div key={tag} className="bg-blue-200 text-blue-700 px-2 py-1 rounded-full flex items-center">
                             {tag}
-                            <button type="button" onClick={() => removeTag(tag)} className="">
+                            <button type="button" onClick={() => removeTag(tag)} className="ml-2 text-blue-500">
                                 &times;
                             </button>
                         </div>;
@@ -119,16 +119,16 @@ export default function NewPostPage() {
                         value={state.currentTag}
                         onChange={handleTagInputChange}
                         onKeyPress={handleTagKeyPress}
-                        className=""
+                        className="flex-grow p-2 outline-none"
                         placeholder="해시태그를 입력하고 엔터를 누르세요!"
                     />
                 </div>
             </div>
 
             {/* 마크다운 에디터 */}
-            <div>
-                <div>
-                    <label>내용 작성</label>
+            <div className="flex">
+                <div className="">
+                    <label className="block text-lg font-medium mb-2">내용 작성</label>
                     <Editor
                         ref={editorRef}
                         initialValue="내용을 작성하세요."
@@ -139,15 +139,10 @@ export default function NewPostPage() {
                         onChange={handleEditorChange}
                     />
                 </div>
-
-                {/* 미리보기 */}
-                <div>
-                    <label>미리보기</label>
-                    <div>
-                        {/* 마크다운으로 작성한 내용 미리보기 */}
-                        <div dangerouslySetInnerHTML={{ __html: state.markdownContent }} />
-                    </div>
-                </div>
+            </div>
+            {/* 작성 완료 버튼 */}
+            <div className="mt-4">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">작성 완료</button>
             </div>
         </div>
     );
