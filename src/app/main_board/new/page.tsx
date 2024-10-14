@@ -31,6 +31,12 @@ export default function NewPostPage() {
     // 에디터 참조
     const editorRef = useRef<any>(null);
 
+    // 제목 입력 핸들러
+    const handleTitleChange = (e: ChangeEvent) => {
+        // 제목 상태 업데이트
+        setState((prevState) => ({ ...prevState, title: e.currentTarget.value }));
+    };
+
     // 해시태그 입력 함수
     const handleTagInputChange = (e: ChangeEvent) => {
         // 해시태그 상태 업데이트
@@ -84,7 +90,13 @@ export default function NewPostPage() {
             {/* 제목 입력 */}
             <div>
                 <label>제목</label>
-                <input type="text" value={state.title} onChange={} className="" placeholder="글 제목을 입력하세요" />
+                <input
+                    type="text"
+                    value={state.title}
+                    onChange={handleTitleChange}
+                    className=""
+                    placeholder="글 제목을 입력하세요"
+                />
             </div>
             {/* 해시태그 입력 */}
             <div>
