@@ -23,19 +23,20 @@ export default function NewPostPage() {
         currentTag: "",
         markdownContent: ""
     });
+
     return (
         <div>
             {/* 제목 입력 */}
             <div>
                 <label>제목</label>
-                <input type="text" value={title} onChange={} className="" placeholder="글 제목을 입력하세요" />
+                <input type="text" value={state.title} onChange={} className="" placeholder="글 제목을 입력하세요" />
             </div>
             {/* 해시태그 입력 */}
             <div>
                 <label>해시태그</label>
                 <div>
                     {/* 해시태그 배지 */}
-                    {hashtags.map((tag) => {
+                    {state.hashtags.map((tag) => {
                         <div key={tag}>
                             {tag}
                             <button type="button" onClick={() => removeTag(tag)} className="">
