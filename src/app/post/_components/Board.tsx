@@ -174,8 +174,20 @@ export default function Board() {
         setCurrentPage(page);
     };
 
+    // 정렬 로직 추가(최신순, 또는 게시글 이름 순)
+    const sortedPosts = [...mock_data].sort((a, b) => {
+        if (sortOrder === "latest") {
+            // 최신순으로 정렬(날짜를 기준으로 내림치순)
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        } else if (sortOrder === "title") {
+            // 게시글 이름 순으로 정렬(알파벳 순으로 정렬)
+            return a.title.localeCompare(b.title);
+        }
+        return 0;
+    });
+
     // 현재 페이지에 표시될 게시글을 계산
-    const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
+    const paginatedPosts = sortedPosts.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
     // 정렬 로직 추가: 최신순 또는 좋아요 순으로 정렬
     const handleSortChange = (value: string) => {
