@@ -17,6 +17,7 @@ const MarkdownEditor = ({ onEditorChange }: MarkdownEditorProps) => {
     // 'useRef'에서 'ToastEditor' 타입을 사용
     const editorRef = useRef<ToastEditor>(null);
 
+    // 에디터 내용 변경 핸들러
     const handleEditorChange = () => {
         const editorInstance = editorRef.current?.getInstance();
         if (editorInstance) {
