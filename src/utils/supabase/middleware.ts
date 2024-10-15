@@ -27,8 +27,16 @@ export async function updateSession(request: NextRequest) {
         }
     );
 
-    // refreshing the auth token
-    await supabase.auth.getUser();
+    const {
+        data: { user }
+    } = await supabase.auth.getUser();
+    console.log(request.nextUrl.pathname);
+
+    // if (!user && !request.nextUrl.pathname.startsWith("/profile") && !request.nextUrl.pathname.startsWith("/admin")) {
+    //     const url = request.nextUrl.clone();
+    //     url.pathname = "/";
+    //     return NextResponse.redirect(url);
+    // } else if (user && )
 
     return supabaseResponse;
 }

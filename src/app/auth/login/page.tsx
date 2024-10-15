@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { AccountLoginInfo } from "@/app/types/Account";
-import { useRouter } from "next/navigation";
+import { navigate } from "@/services/authService";
 
 const schema: z.ZodType<AccountLoginInfo> = z.object({
     email: z.string().email({ message: "유효한 값이 아닙니다." }),
@@ -12,8 +12,6 @@ const schema: z.ZodType<AccountLoginInfo> = z.object({
 });
 
 const Login = () => {
-    const router = useRouter();
-
     const { register, handleSubmit, formState } = useForm<AccountLoginInfo>({
         mode: "onChange",
         defaultValues: {
@@ -30,15 +28,22 @@ const Login = () => {
             body: JSON.stringify(data)
         });
 
-        const result = await response.json();
-
-        if (result.success) {
-            console.log("성공");
-            alert("성공적으로 로그인 되었습니다.");
-            router.replace("/");
+        // 서버가 2xx 상태 코드인 경우에만 성공 처리
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+                console.log("성공");
+                alert("성공적으로 로그인 되었습니다.");
+                navigate();
+            } else {
+                console.log("실패");
+                alert("아이디 또는 비밀번호를 확인하세요.");
+            }
         } else {
-            console.log("실패");
-            alert("아이디 또는 비밀번호를 확인하세요.");
+            // 서버에서 2xx 외의 상태 코드를 반환하는 경우 (실패)
+            console.log("response: ", response);
+            console.error("로그인 실패");
+            alert(`로그인 실패`);
         }
     };
 

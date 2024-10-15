@@ -1,19 +1,19 @@
 "use server";
 
-import { AccountInfo } from "@/app/types/Account";
-import { BASE_PROFILE_URL } from "@/utils/network/config";
+import { User } from "@/app/types/User";
 import { createClient } from "@/utils/supabase/server";
 
-export async function addUser(data: AccountInfo) {
+export async function getUserData(userId: undefined | string): Promise<User | null> {
+    if (userId === undefined) return null;
+
     const supabase = createClient();
 
-    const { error } = await supabase.from("Users").insert({
-        user_name: data.nickname as string,
-        profile_url: BASE_PROFILE_URL as string,
-        email: data.email as string,
-        admin: false as boolean,
-        activate: true as boolean
-    });
+    const { data, error } = await supabase.from("User").select().eq("id", userId).single();
 
-    return error ? { success: false, error: error.message } : { success: true };
+    if (error) {
+        console.log("사용자 데이터 불러오기 오류", error);
+        return null;
+    }
+
+    return data;
 }
