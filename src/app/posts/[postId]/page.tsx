@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createBrowserClient } from "@supabase/ssr";
 import Modal from "../modal";
+import { FaFlag, FaTrash, FaHeart } from "react-icons/fa";
 
 interface User {
     user_name: string;
@@ -31,7 +32,7 @@ const PostDetailPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [deleting, setDeleting] = useState<boolean>(false);
-    const [reportContent, setReportContent] = useState<string>("");
+    const [likes, setLikes] = useState<number>(0); // 좋아요 수 상태 추가
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -67,14 +68,27 @@ const PostDetailPage = () => {
                 user_name: data.users?.user_name
             };
             setPost(postData);
+            setLikes(data.likes || 0);
         } else {
             setError("게시물을 찾을 수 없습니다.");
-            console.log("Fetched post data:", data);
         }
         setLoading(false);
     };
 
-    const handleReportSubmit = async () => {
+    const handleReportClick = async () => {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            alert("로그인 후 신고할 수 있습니다.");
+            router.push("/login");
+        } else {
+            setIsModalOpen(true);
+        }
+    };
+
+    const handleReportSubmit = async ({ report, board_id }: { report: string; board_id: string }) => {
         const {
             data: { user }
         } = await supabase.auth.getUser();
@@ -84,22 +98,20 @@ const PostDetailPage = () => {
             return;
         }
 
-        if (window.confirm("정말 신고하시겠습니까?")) {
-            const { error } = await supabase.from("Reported_Post").insert([
-                {
-                    user_id: user.id,
-                    board_id: postId,
-                    report: reportContent
-                }
-            ]);
-
-            if (error) {
-                console.error("Error reporting post:", error);
-                alert("신고하는 중 에러가 발생했습니다.");
-            } else {
-                alert("신고가 완료되었습니다.");
-                setIsModalOpen(false);
+        const { error } = await supabase.from("Reported_Post").insert([
+            {
+                user_id: user.id,
+                board_id: board_id,
+                report: report
             }
+        ]);
+
+        if (error) {
+            console.error("Error reporting post:", error);
+            alert("신고하는 중 에러가 발생했습니다.");
+        } else {
+            alert("신고가 완료되었습니다.");
+            setIsModalOpen(false);
         }
     };
 
@@ -127,6 +139,10 @@ const PostDetailPage = () => {
         }
     };
 
+    const handleLike = () => {
+        setLikes(likes + 1);
+    };
+
     return (
         <div className="bg-gray-100 min-h-screen py-10">
             <main className="container mx-auto bg-white shadow-lg rounded-lg p-6 mt-16">
@@ -138,19 +154,19 @@ const PostDetailPage = () => {
                     <>
                         <div className="flex justify-end mb-4">
                             <button
-                                onClick={() => setIsModalOpen(true)}
-                                className="mr-2 px-2 py-1 bg-red-500 text-white rounded-md text-sm hover:bg-red-600 transition"
+                                onClick={handleReportClick}
+                                className="mr-2 p-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                             >
-                                신고하기
+                                <FaFlag /> {/* 신고하기 아이콘 */}
                             </button>
                             <button
                                 onClick={handleDeletePost}
-                                className={`px-2 py-1 ${
+                                className={`p-2 ${
                                     deleting ? "bg-gray-400" : "bg-gray-300"
-                                } text-black rounded-md text-sm hover:bg-gray-400 transition`}
+                                } text-black rounded-md hover:bg-gray-400 transition`}
                                 disabled={deleting}
                             >
-                                {deleting ? "삭제 중..." : "삭제"}
+                                <FaTrash /> {/* 삭제 아이콘 */}
                             </button>
                         </div>
                         <div className="mb-4 p-4 bg-gray-200 rounded-lg">
@@ -164,6 +180,12 @@ const PostDetailPage = () => {
                             {post.hashtags && post.hashtags.length > 0 && (
                                 <p className="text-sm text-gray-500">해시태그: {post.hashtags.join(", ")}</p>
                             )}
+                        </div>
+                        <div className="flex items-center mb-4">
+                            <button onClick={handleLike} className="flex items-center text-red-500">
+                                <FaHeart className="mr-1" /> {/* 좋아요 아이콘 */}
+                                {likes} {/* 좋아요 수 표시 */}
+                            </button>
                         </div>
                         <div className="flex justify-end">
                             <button
@@ -187,23 +209,12 @@ const PostDetailPage = () => {
                 )}
             </main>
 
-            {isModalOpen && (
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleReportSubmit}>
-                    <h2 className="text-xl font-bold mb-4">신고 사유를 작성해주세요</h2>
-                    <textarea
-                        value={reportContent}
-                        onChange={(e) => setReportContent(e.target.value)}
-                        className="w-full h-40 p-2 border rounded-lg"
-                        placeholder="신고 사유를 입력하세요."
-                    />
-                    <button
-                        onClick={handleReportSubmit}
-                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                    >
-                        신고하기
-                    </button>
-                </Modal>
-            )}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleReportSubmit}
+                boardId={postId} // boardId를 전달
+            />
         </div>
     );
 };
