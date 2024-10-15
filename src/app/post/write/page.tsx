@@ -13,7 +13,7 @@ interface PostPageState {
     markdownContent: string;
 }
 
-export default function NewPostPage() {
+export default function WritePostPage() {
     const [state, setState] = useState<PostPageState>({
         title: "",
         hashtags: [],
