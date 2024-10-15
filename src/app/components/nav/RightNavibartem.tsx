@@ -1,13 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User } from "../../types/User";
 import Image from "next/image";
 import { navigate } from "@/services/authService";
 import Link from "next/link";
 
 const RightItem = ({ user }: { user: User }) => {
-    const [menuIsOn, setMenuIsOn] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const popupRef = useRef<HTMLDivElement | null>(null); // 팝업 요소를 참조하기 위한 ref
+
+    const handleClickOutside = (event: MouseEvent) => {
+        // 클릭한 요소가 팝업 요소가 아닌 경우에만 닫기
+        if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        // 컴포넌트가 마운트되었을 때 전역 클릭 이벤트 리스너를 추가
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // 컴포넌트가 언마운트되었을 때 전역 클릭 이벤트 리스너를 제거
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleSignout = async () => {
         const response = await fetch("/api/signout", {
@@ -28,11 +46,12 @@ const RightItem = ({ user }: { user: User }) => {
     return (
         <div
             className="relative flex flex-row items-center gap-[15px] cursor-pointer bg-blue-300"
-            onClick={() => setMenuIsOn(!menuIsOn)}
+            ref={popupRef}
+            onClick={() => setIsOpen((isOpen) => !isOpen)}
         >
             <span className="text-black">{user.user_name}</span>
             <Image className="flex rounded-full border-none" src={user.profile_url} alt={""} width={70} height={70} />
-            {menuIsOn && (
+            {isOpen && (
                 <div
                     className="absolute top-full w-[100px] h-auto flex flex-col justify-start items-center bg-red-300"
                     onClick={(e) => e.stopPropagation()}
@@ -40,7 +59,6 @@ const RightItem = ({ user }: { user: User }) => {
                     <Link href={"/profile"}>
                         <span>마이페이지</span>
                     </Link>
-                    <hr className="w-full h-[2px] bg-gray-50"></hr>
                     <button onClick={handleSignout}>로그아웃</button>
                 </div>
             )}
