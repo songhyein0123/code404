@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import TitleInput from "./_components/TItleInput";
+import TitleInput from "./_components/TitleInput";
 import HashtagInput from "./_components/HashtagInput";
 import MarkdownEditor from "./_components/MarkdownEditor";
 
