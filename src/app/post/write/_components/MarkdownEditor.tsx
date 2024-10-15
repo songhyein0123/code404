@@ -26,7 +26,7 @@ const MarkdownEditor = ({ onEditorChange }: MarkdownEditorProps) => {
 
     return (
         <div>
-            <label>내용 작성</label>
+            <label className="block text-lg font-medium mb-2">내용 작성</label>
             <Editor
                 ref={editorRef}
                 initialValue="내용을 작성하세요."
