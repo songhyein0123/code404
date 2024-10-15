@@ -28,7 +28,7 @@ export default function WritePostPage() {
     }, []);
 
     return (
-        <div>
+        <div className="container mx-auto p-4">
             {/* 제목 입력 */}
             <TItleInput title={title} onTitleChange={handleTitleChange} />
 
@@ -39,8 +39,8 @@ export default function WritePostPage() {
             <MarkdownEditor onEditorChange={handleEditorChange} />
 
             {/* 작성 완료 버튼 */}
-            <div>
-                <button>작성 완료</button>
+            <div className="mt-4">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">작성 완료</button>
             </div>
         </div>
     );
