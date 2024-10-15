@@ -7,7 +7,7 @@ import { Editor as ToastEditor } from "@toast-ui/react-editor";
 
 // 인터페이스 정의
 interface MarkdownEditorProps {
-    inEditorChange: (content: string) => void;
+    onEditorChange: (content: string) => void;
 }
 
 // ToastUI Editor를 동적으로 불러오기
