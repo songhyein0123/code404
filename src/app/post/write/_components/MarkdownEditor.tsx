@@ -1,30 +1,16 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor as ToastEditor } from "@toast-ui/react-editor";
 
-interface MarkdownEditorProps {
-    markdownContent: string;
-    onMarkdownChange: (content: string) => void;
-}
-
+// ToastUI Editor를 동적으로 불러오기
 const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.Editor), { ssr: false });
 
-const MarkdownEditor = ({ markdownContent, onMarkdownChange }: MarkdownEditorProps) => {
-    const editorRef = useRef<any>(null);
-
-    useEffect(() => {
-        const editorInstance = editorRef.current?.getInstance();
-        if (editorInstance) {
-            editorInstance.Instance.setMarkdown(markdownContent);
-        }
-    }, [markdownContent]);
-
-    const handleEditorChange = () => {
-        const editorInstance = editorRef.current?.getInstance();
-        const newMarkdownContent = editorInstance.getMarkdown();
-        onMarkdownChange(newMarkdownContent);
-    };
+const MarkdownEditor = () => {
+    // 'useRef'에서 'ToastEditor' 타입을 사용
+    const editorRef = useRef<ToastEditor>(null);
 
     return (
         <div>
@@ -36,7 +22,6 @@ const MarkdownEditor = ({ markdownContent, onMarkdownChange }: MarkdownEditorPro
                 height="400px"
                 initialEditType="markdown"
                 useCommandShortcut={false}
-                onChange={handleEditorChange}
             />
         </div>
     );
