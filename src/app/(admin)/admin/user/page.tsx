@@ -12,7 +12,7 @@ const supabase = createClient();
 
 const fetchUsers = async (page: number, filter: string): Promise<UserType[]> => {
     let query = supabase
-        .from("Users")
+        .from("User")
         .select(`* `)
         .range((page - 1) * pageSize, page * pageSize - 1);
 
@@ -34,7 +34,7 @@ const fetchUsers = async (page: number, filter: string): Promise<UserType[]> => 
 };
 
 const fetchTotalUsers = async (filter: string): Promise<number> => {
-    let query = supabase.from("Users").select("*", { count: "exact", head: true });
+    let query = supabase.from("User").select("*", { count: "exact", head: true });
 
     if (filter === "true") {
         query = query.eq("activate", true);
@@ -57,7 +57,7 @@ const toggleUserVisibility = async ({
     currentStatus: boolean;
 }): Promise<void> => {
     const supabase = createClient();
-    const { error } = await supabase.from("Users").update({ activate: !currentStatus }).eq("id", user_id);
+    const { error } = await supabase.from("User").update({ activate: !currentStatus }).eq("id", user_id);
     if (error) {
         throw new Error(error.message);
     }
