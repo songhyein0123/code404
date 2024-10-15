@@ -1,24 +1,24 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React from "react";
 
+// 인터페이스 정의
 interface TitleInputProps {
     title: string;
-    onTitleChange: (title: string) => void;
+    onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TitleInput = ({ title, onTitleChange }: TitleInputProps) => {
-    const handleTitleChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            onTitleChange(e.target.value);
-        },
-        [onTitleChange]
-    );
-
     return (
-        <div>
-            <label>제목</label>
-            <input type="text" value={title} onChange={handleTitleChange} placeholder="글 제목을 입력하세요" />
+        <div className="mb-4">
+            <label className="block text-lg font-medium mb-2">제목</label>
+            <input
+                type="text"
+                value={title}
+                onChange={onTitleChange}
+                className="w-full p-2 border border-gray-300 rounded"
+                placeholder="글 제목을 입력하세요"
+            />
         </div>
     );
 };
