@@ -1,4 +1,4 @@
-import Board from "@/components/Board";
+import Board from "./_components/Board";
 
 export default function main_board() {
     return (
