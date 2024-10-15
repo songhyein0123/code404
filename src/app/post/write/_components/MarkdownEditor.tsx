@@ -8,9 +8,16 @@ import { Editor as ToastEditor } from "@toast-ui/react-editor";
 // ToastUI Editor를 동적으로 불러오기
 const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.Editor), { ssr: false });
 
-const MarkdownEditor = () => {
+const MarkdownEditor = ({ onEditorChange }: { onEditorChange: (content: string) => void }) => {
     // 'useRef'에서 'ToastEditor' 타입을 사용
     const editorRef = useRef<ToastEditor>(null);
+
+    const handleEditorChange = () => {
+        const editorInstance = editorRef.current?.getInstance();
+        if (editorInstance) {
+            onEditorChange(editorInstance.getMarkdown());
+        }
+    };
 
     return (
         <div>
@@ -22,6 +29,7 @@ const MarkdownEditor = () => {
                 height="400px"
                 initialEditType="markdown"
                 useCommandShortcut={false}
+                onChange={handleEditorChange}
             />
         </div>
     );
