@@ -245,7 +245,10 @@ export default function Board() {
                         언어 선택
                     </button>
                     {isDropdownOpen && (
-                        <div className="absolute mt-2 bg-white border rounded shadlw-lg">
+                        <div
+                            className="absolute bottom-full mb-2 bg-white border rounded shadow-lg max-h-40 overflow-y-auto"
+                            style={{ width: "200px" }} // 드롭다운 크기 설정
+                        >
                             {allHashtags.map((tag) => (
                                 <div key={tag} className="px-4 py-2">
                                     <label className="flex item-center">
