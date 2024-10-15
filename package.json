@@ -1,42 +1,39 @@
 {
-  "name": "code404",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
-    "@supabase/ssr": "^0.5.1",
-    "@supabase/supabase-js": "^2.45.4",
-    "@tanstack/react-query": "^5.59.9",
-    "@tanstack/react-query-devtools": "^5.59.8",
-    "@toast-ui/editor": "^3.2.2",
-    "@toast-ui/react-editor": "^3.2.3",
-    "chart.js": "^4.4.4",
-    "next": "14.2.15",
-    "react": "^18",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18",
-<<<<<<< HEAD
-    "react-icons": "^5.3.0",
-=======
-    "react-hook-form": "^7.53.0",
-    "zod": "^3.23.8",
->>>>>>> 44deab32ed9577072a0053b07a17f9fe79666ee9
-    "zustand": "^5.0.0-rc.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.15",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+    "name": "code404",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@hookform/resolvers": "^3.9.0",
+        "@supabase/ssr": "^0.5.1",
+        "@supabase/supabase-js": "^2.45.4",
+        "@tanstack/react-query": "^5.59.9",
+        "@tanstack/react-query-devtools": "^5.59.8",
+        "@toast-ui/editor": "^3.2.2",
+        "@toast-ui/react-editor": "^3.2.3",
+        "chart.js": "^4.4.4",
+        "next": "14.2.15",
+        "react": "^18",
+        "react-chartjs-2": "^5.2.0",
+        "react-dom": "^18",
+        "react-hook-form": "^7.53.0",
+        "react-icons": "^5.3.0",
+        "zod": "^3.23.8",
+        "zustand": "^5.0.0-rc.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.15",
+        "postcss": "^8",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5"
+    }
 }

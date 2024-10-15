@@ -22,6 +22,7 @@ interface Post {
 
 interface PostWithUser extends Post {
     users?: User;
+    likes?: number; // 좋아요 수 추가
 }
 
 const PostDetailPage = () => {
@@ -33,6 +34,7 @@ const PostDetailPage = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [deleting, setDeleting] = useState<boolean>(false);
     const [likes, setLikes] = useState<number>(0); // 좋아요 수 상태 추가
+    const [userLikesPost, setUserLikesPost] = useState<boolean>(false); // 사용자가 좋아요를 눌렀는지 상태 추가
 
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -42,6 +44,7 @@ const PostDetailPage = () => {
     useEffect(() => {
         if (postId) {
             fetchPost();
+            fetchLikes();
         }
     }, [postId]);
 
@@ -54,7 +57,8 @@ const PostDetailPage = () => {
             .select(
                 `
                 *,
-                users:user_id (user_name)
+                users:user_id (user_name),
+                hashtags:Hashtag (hashtag)
             `
             )
             .eq("board_id", postId)
@@ -65,14 +69,38 @@ const PostDetailPage = () => {
         } else if (data) {
             const postData: PostWithUser = {
                 ...data,
-                user_name: data.users?.user_name
+                user_name: data.users?.user_name,
+                hashtags: data.hashtags ? data.hashtags.map((h: any) => h.hashtag) : [] // 해시태그 배열 설정
             };
             setPost(postData);
-            setLikes(data.likes || 0);
+            setLikes(data.likes || 0); // 초기 좋아요 수 설정
         } else {
             setError("게시물을 찾을 수 없습니다.");
         }
         setLoading(false);
+    };
+
+    const fetchLikes = async () => {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+
+        const userId = userData.user?.id;
+
+        const { data, error } = await supabase.from("Like").select("*").eq("board_id", postId);
+
+        if (data) {
+            setLikes(data.length);
+            const { data: userLikesData } = await supabase
+                .from("Like")
+                .select("*")
+                .eq("board_id", postId)
+                .eq("user_id", userId)
+                .single();
+
+            setUserLikesPost(!!userLikesData);
+        } else if (error) {
+            console.error("Error fetching likes:", error);
+            setError("좋아요 정보를 가져오는 중 에러가 발생했습니다.");
+        }
     };
 
     const handleReportClick = async () => {
@@ -82,7 +110,7 @@ const PostDetailPage = () => {
 
         if (!user) {
             alert("로그인 후 신고할 수 있습니다.");
-            router.push("/login");
+            router.push("/auth/login");
         } else {
             setIsModalOpen(true);
         }
@@ -139,8 +167,41 @@ const PostDetailPage = () => {
         }
     };
 
-    const handleLike = () => {
-        setLikes(likes + 1);
+    const handleLike = async () => {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            alert("로그인 후 좋아요를 누를 수 있습니다.");
+            return;
+        }
+
+        if (userLikesPost) {
+            const { error } = await supabase.from("Like").delete().eq("board_id", postId).eq("user_id", user.id);
+
+            if (error) {
+                alert("좋아요 취소 중 에러가 발생했습니다.");
+            } else {
+                setLikes(likes - 1);
+                setUserLikesPost(false);
+            }
+        } else {
+            const { error } = await supabase.from("Like").insert([
+                {
+                    board_id: postId,
+                    user_id: user.id
+                }
+            ]);
+
+            if (error) {
+                console.error("Error adding like:", error);
+                alert("좋아요 중 에러가 발생했습니다.");
+            } else {
+                setLikes(likes + 1);
+                setUserLikesPost(true);
+            }
+        }
     };
 
     return (
@@ -177,14 +238,14 @@ const PostDetailPage = () => {
                         </div>
                         <p className="text-lg mb-6 text-gray-700 leading-relaxed">{post.content}</p>
                         <div className="mb-4">
-                            {post.hashtags && post.hashtags.length > 0 && (
+                            {post.hashtags.length > 0 && (
                                 <p className="text-sm text-gray-500">해시태그: {post.hashtags.join(", ")}</p>
                             )}
                         </div>
                         <div className="flex items-center mb-4">
                             <button onClick={handleLike} className="flex items-center text-red-500">
-                                <FaHeart className="mr-1" /> {/* 좋아요 아이콘 */}
-                                {likes} {/* 좋아요 수 표시 */}
+                                <FaHeart className={`mr-1 ${userLikesPost ? "text-red-600" : "text-gray-400"}`} />
+                                {likes}
                             </button>
                         </div>
                         <div className="flex justify-end">
@@ -205,15 +266,14 @@ const PostDetailPage = () => {
                         </div>
                     </>
                 ) : (
-                    <p className="text-center text-gray-500">게시물을 찾을 수 없습니다.</p>
+                    <p className="text-center text-gray-500">게시물이 없습니다.</p>
                 )}
             </main>
-
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleReportSubmit}
-                boardId={postId} // boardId를 전달
+                boardId={postId}
             />
         </div>
     );
