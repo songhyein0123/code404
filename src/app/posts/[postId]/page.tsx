@@ -1,4 +1,4 @@
-"use client"; // 클라이언트 컴포넌트로 설정
+"use client";
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -13,14 +13,14 @@ interface Post {
     board_id: string;
     title: string;
     content: string;
-    created_at: string; // 작성 시간 추가
-    hashtags: string[]; // 해시태그 추가
-    user_id: string; // 작성자 ID
-    user_name?: string; // 작성자 이름 (선택적)
+    created_at: string;
+    hashtags: string[];
+    user_id: string;
+    user_name?: string;
 }
 
 interface PostWithUser extends Post {
-    users?: User; // users 속성 추가
+    users?: User;
 }
 
 const PostDetailPage = () => {
@@ -44,10 +44,9 @@ const PostDetailPage = () => {
         }
     }, [postId]);
 
-    // 게시물 가져오기
     const fetchPost = async () => {
         setLoading(true);
-        setError(null); // 에러 상태 초기화
+        setError(null);
 
         const { data, error } = await supabase
             .from("Post")
@@ -61,21 +60,20 @@ const PostDetailPage = () => {
             .single();
 
         if (error) {
-            console.error("Error fetching post:", error);
             setError("게시물을 불러오는 중 에러가 발생했습니다.");
         } else if (data) {
             const postData: PostWithUser = {
                 ...data,
-                user_name: data.users?.user_name // 작성자 이름 추가
+                user_name: data.users?.user_name
             };
             setPost(postData);
         } else {
             setError("게시물을 찾을 수 없습니다.");
+            console.log("Fetched post data:", data);
         }
         setLoading(false);
     };
 
-    // 신고 처리 함수
     const handleReportSubmit = async () => {
         const {
             data: { user }
@@ -90,8 +88,8 @@ const PostDetailPage = () => {
             const { error } = await supabase.from("Reported_Post").insert([
                 {
                     user_id: user.id,
-                    board_id: postId, // 신고하려는 게시물의 ID
-                    report: reportContent // 신고 내용
+                    board_id: postId,
+                    report: reportContent
                 }
             ]);
 
@@ -100,12 +98,11 @@ const PostDetailPage = () => {
                 alert("신고하는 중 에러가 발생했습니다.");
             } else {
                 alert("신고가 완료되었습니다.");
-                setIsModalOpen(false); // 모달 닫기
+                setIsModalOpen(false);
             }
         }
     };
 
-    // 게시물 삭제 처리 함수
     const handleDeletePost = async () => {
         if (!postId) return;
 
@@ -124,7 +121,6 @@ const PostDetailPage = () => {
         }
     };
 
-    // 뒤로 가기
     const handleGoBack = () => {
         if (window.confirm("정말 뒤로 돌아가시겠습니까?")) {
             router.back();
@@ -191,13 +187,8 @@ const PostDetailPage = () => {
                 )}
             </main>
 
-            {/* 신고하기 모달 */}
             {isModalOpen && (
-                <Modal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    onSubmit={handleReportSubmit} // 신고하기
-                >
+                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleReportSubmit}>
                     <h2 className="text-xl font-bold mb-4">신고 사유를 작성해주세요</h2>
                     <textarea
                         value={reportContent}

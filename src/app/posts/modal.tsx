@@ -3,10 +3,11 @@ import { FC, useState } from "react";
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (report: { report: string; board_id: number }) => void; // 보고서 형식 변경
+    onSubmit: (data: { report: string; board_id: string }) => Promise<void>; // 수정
+    boardId: string; // 추가
 }
 
-const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit, boardId }) => {
     const [selectedReason, setSelectedReason] = useState<string>("");
     const [otherReason, setOtherReason] = useState<string>("");
 
@@ -14,10 +15,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
 
     const handleSubmit = () => {
         const reasonToSubmit = selectedReason === "기타" ? otherReason : selectedReason;
-        onSubmit({ report: reasonToSubmit, board_id: 1 }); // board_id는 실제 게시물 ID로 교체해야 함
-        setSelectedReason(""); // 제출 후 선택 초기화
-        setOtherReason(""); // 기타 사유 초기화
-        onClose(); // 모달 닫기
+        onSubmit({ report: reasonToSubmit, board_id: boardId }); // boardId 사용
+        setSelectedReason("");
+        setOtherReason("");
+        onClose();
     };
 
     return (
@@ -25,6 +26,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-xl font-bold mb-4">신고 사유를 선택해주세요</h2>
                 <div className="mb-4">
+                    {/* 라디오 버튼 목록 */}
                     <label className="block">
                         <input
                             type="radio"
