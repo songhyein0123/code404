@@ -125,7 +125,8 @@ export default function WritePostPage() {
                         previewStyle="vertical"
                         height="400px"
                         initialEditType="markdown"
-                        useCommandShortcut={true}
+                        useCommandShortcut={false}
+                        autofocus={false}
                         onChange={handleEditorChange} // 에디터 내용 변경 시 핸들러
                     />
                 </div>
