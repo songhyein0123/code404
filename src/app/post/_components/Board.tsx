@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import SortDropdown from "./SortDropdown";
 import { Search } from "./Search";
 
@@ -164,6 +165,7 @@ export default function Board() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
+    const router = useRouter();
 
     // 페이지 변경 함수
     const handlePageChange = (page: number) => {
@@ -194,6 +196,11 @@ export default function Board() {
 
     // 게시글의 해시태그에서 중복 없는 해시태그 목록 추출하는 함수
     const allHashtags = Array.from(new Set(mock_data.flatMap((post) => post.hashtags)));
+
+    // 글쓰기 버튼 클릭 시 post/write 페이지로 이동
+    const handleWriteClick = () => {
+        router.push("/post/write");
+    };
 
     return (
         <div className="p-4 max-w-3xl mx-auto">
@@ -245,7 +252,9 @@ export default function Board() {
                 </div>
 
                 {/* 글쓰기 버튼 */}
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">글쓰기</button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleWriteClick}>
+                    글쓰기
+                </button>
             </div>
 
             {/* 페이지네이션 */}
