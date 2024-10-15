@@ -12,7 +12,7 @@ Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip, L
 
 const fetchUserCounts = async () => {
     const { data, error } = await supabase
-        .from("Users")
+        .from("User")
         .select("*")
         .order("created_at", { ascending: false })
         .eq("activate", true);
