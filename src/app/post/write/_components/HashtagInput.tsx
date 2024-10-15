@@ -40,13 +40,13 @@ const HashtagInput = ({ hashtags, currentTag, onTagChange }: HashtagInputProps) 
         [hashtags, currentTag, onTagChange]
     );
     return (
-        <div>
-            <label>해시태그</label>
-            <div>
+        <div className="mb-4">
+            <label className="block text-lg font-medium mb-2">해시태그</label>
+            <div className="flex flex-wrap items-center gap-2 border border-gary-300 p-2 rounded">
                 {hashtags.map((tag) => (
-                    <div key={tag}>
+                    <div key={tag} className="bg-blue-200 text-blue-700 px-2 py-1 rounded-full flex items-center">
                         {tag}
-                        <button type="button" onClick={() => removeTag(tag)}>
+                        <button type="button" onClick={() => removeTag(tag)} className="ml-2 text-blue-500">
                             &times;
                         </button>
                     </div>
@@ -56,6 +56,7 @@ const HashtagInput = ({ hashtags, currentTag, onTagChange }: HashtagInputProps) 
                     value={tagInput}
                     onChange={handleTagInputChange}
                     onKeyPress={handleTagKeyPress}
+                    className="flex-grow p-2 outline-none"
                     placeholder="해시태그를 입력하고 엔터를 누르세요"
                 />
             </div>
