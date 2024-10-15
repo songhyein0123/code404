@@ -7,7 +7,7 @@ interface SortOption {
 
 const sortOptions: SortOption[] = [
     { label: "최신순", value: "latest" },
-    { label: "좋아요 순", value: "likes" }
+    { label: "게시글 이름 순", value: "title" }
 ];
 
 interface SortDropdownProps {
