@@ -59,13 +59,15 @@ const RightItem = ({ user }: { user: User }) => {
             />
             {isOpen && (
                 <div
-                    className="absolute top-[110%] flex flex-col justify-start items-center bg-red-300"
+                    className="absolute top-[110%] py-3 px-5 justify-start list-none leading-8 border-[1px] border-black border-solid rounded-md"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <Link href={"/profile"}>
-                        <span>마이페이지</span>
-                    </Link>
-                    <button onClick={handleSignout}>로그아웃</button>
+                    <ul>
+                        <li>
+                            <Link href={"/profile"}>마이페이지</Link>
+                        </li>
+                        <li onClick={handleSignout}>로그아웃</li>
+                    </ul>
                 </div>
             )}
         </div>
