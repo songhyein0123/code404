@@ -1,10 +1,11 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: { report: string; board_id: string }) => Promise<void>; // 수정
-    boardId: string; // 추가
+    onSubmit: (data: { report: string; board_id: string }) => Promise<void>;
+    boardId: string;
+    children?: ReactNode;
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit, boardId }) => {
@@ -15,7 +16,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, onSubmit, boardId }) => {
 
     const handleSubmit = () => {
         const reasonToSubmit = selectedReason === "기타" ? otherReason : selectedReason;
-        onSubmit({ report: reasonToSubmit, board_id: boardId }); // boardId 사용
+        onSubmit({ report: reasonToSubmit, board_id: boardId });
         setSelectedReason("");
         setOtherReason("");
         onClose();
