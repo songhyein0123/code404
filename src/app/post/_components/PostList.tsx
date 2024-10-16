@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Post } from "./PostMockData"; // mock_data를 PostMockData.ts에서 import
+import { Post } from "./PostMockData";
+import Search from "../_components/Search";
+import SortDropdown from "./SortDropdown";
 
 const POSTS_PER_PAGE = 5; // 페이지당 보여줄 게시글 수
 
@@ -8,21 +10,43 @@ interface PostListProps {
 }
 
 const PostList = ({ posts }: PostListProps) => {
-    const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortOrder, setSortOrder] = useState<"latest" | "title">("latest"); // 정렬 상태
+
+    // 정렬 함수
+    const sortedPosts = () => {
+        const sorted = [...posts]; // 원본 배열을 복사
+        if (sortOrder === "latest") {
+            return sorted.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        } else {
+            return sorted.sort((a, b) => a.title.localeCompare(b.title));
+        }
+    };
 
     // 전체 페이지 수 계산
     const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
     // 현재 페이지에 해당하는 게시글 가져오기
-    const currentPosts = posts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
+    const currentPosts = sortedPosts().slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
 
     // 페이지 이동 함수
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
 
+    // 정렬 상태 업데이트 함수
+    const handleSortChange = (newSortOrder: "latest" | "title") => {
+        setSortOrder(newSortOrder);
+    };
+
     return (
         <div>
+            <div className="flex justify-between items-center mb-4">
+                {/* 정렬 방식 선택 */}
+                <SortDropdown sortOrder={sortOrder} onSortChange={handleSortChange} />
+                <Search />
+            </div>
+
             <div className="divide-y divide-gray-300">
                 {currentPosts.map((post) => (
                     <div key={post.id} className="border-b-2 border-gray-500 py-4">
@@ -36,8 +60,7 @@ const PostList = ({ posts }: PostListProps) => {
                             <div className="flex flex-wrap">
                                 {post.hashtags.map((tag, index) => (
                                     <span key={index} className="text-blue-500 mr-2">
-                                        {" "}
-                                        {tag}{" "}
+                                        {tag}
                                     </span>
                                 ))}
                             </div>
