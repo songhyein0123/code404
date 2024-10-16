@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { FaEdit } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 interface Post {
@@ -20,22 +19,22 @@ const Posts = ({ userId }: PostsProps) => {
     const supabase = createClient();
 
     useEffect(() => {
+        const fetchUserPosts = async () => {
+            try {
+                const { data: userPosts, error } = await supabase.from("Post").select("*").eq("user_id", userId);
+
+                if (error) throw error;
+
+                setPosts(userPosts || []);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+
         if (userId) {
             fetchUserPosts();
         }
     }, [userId]);
-
-    const fetchUserPosts = async () => {
-        try {
-            const { data: userPosts, error } = await supabase.from("Post").select("*").eq("user_id", userId);
-
-            if (error) throw error;
-
-            setPosts(userPosts || []);
-        } catch (error) {
-            console.error("Error fetching posts:", error);
-        }
-    };
 
     return (
         <div className="p-6 rounded-lg shadow-lg">
@@ -58,7 +57,9 @@ const Posts = ({ userId }: PostsProps) => {
                                     e.stopPropagation();
                                     router.push(`/posts/edit/${post.board_id}`);
                                 }}
-                            ></button>
+                            >
+                                수정하기
+                            </button>
                         </div>
                     ))}
                 </div>
