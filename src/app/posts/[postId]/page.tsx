@@ -286,9 +286,7 @@ const PostDetailPage = () => {
                             </button>
                             {post.user_id === currentUserId && (
                                 <button
-                                    onClick={() => {
-                                        console.log("수정하기 버튼 클릭됨");
-                                    }}
+                                    onClick={() => router.push(`/posts/edit/${postId}`)} // 수정 페이지로 이동
                                     className="ml-2 px-4 py-2 bg-[#00D084] text-white rounded-md hover:bg-[#FF8A00] transition rounded-md"
                                 >
                                     수정하기
