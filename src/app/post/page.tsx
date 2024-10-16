@@ -24,9 +24,6 @@ export default function PostPage() {
                 <div className="w-1/4">
                     <LanguageFilter />
                 </div>
-
-                {/* 오른쪽: 글쓰기 버튼 */}
-
                 {/* 글쓰기 버튼 */}
                 <button
                     onClick={handleWriteClick}
