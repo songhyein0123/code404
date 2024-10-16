@@ -1,5 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
@@ -31,7 +31,21 @@ export async function updateSession(request: NextRequest) {
         data: { user }
     } = await supabase.auth.getUser();
 
-    if ((!user && request.nextUrl.pathname.startsWith("/profile")) || request.nextUrl.pathname.startsWith("/admin")) {
+    if (user && request.nextUrl.pathname.startsWith("/admin")) {
+        const { data } = await supabase.from("User").select("email, admin").eq("id", user.id).single();
+
+        if (!data?.admin) {
+            const url = request.nextUrl.clone();
+            url.pathname = "/";
+            return NextResponse.redirect(url);
+        }
+    } else if (user && request.nextUrl.pathname.startsWith("/auth")) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/";
+        return NextResponse.redirect(url);
+    }
+
+    if (!user && (request.nextUrl.pathname.startsWith("/profile") || request.nextUrl.pathname.startsWith("/admin"))) {
         const url = request.nextUrl.clone();
         url.pathname = "/auth/login";
         return NextResponse.redirect(url);
