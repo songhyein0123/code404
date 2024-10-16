@@ -1,11 +1,11 @@
 import React from "react";
 
 interface LanguageFilterProps {
-    languages: string[]; // 필터링할 언어 배열
+    languages?: string[]; // 필터링할 언어 배열
     onFilterChange: (language: string) => void; // 언어 변경 시 호출될 함수
 }
 
-const LanguageFilter = ({ languages, onFilterChange }: LanguageFilterProps) => {
+const LanguageFilter = ({ languages = [], onFilterChange }: LanguageFilterProps) => {
     return (
         <div>
             <label htmlFor="language" className="mr-2">
