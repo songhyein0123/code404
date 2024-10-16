@@ -1,29 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
-interface LanguageFilterProps {
-    languages?: string[]; // 필터링할 언어 배열
-    onFilterChange: (language: string) => void; // 언어 변경 시 호출될 함수
-}
+const languages = ["All", "JavaScript", "TypeScript", "Python", "Java", "C++"];
 
-const LanguageFilter = ({ languages = [], onFilterChange }: LanguageFilterProps) => {
+const LanguageFilter = () => {
+    const [selectedLanguage, setSelectedLanguage] = useState("All");
+
+    const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedLanguage(event.target.value);
+    };
+
     return (
         <div>
-            <label htmlFor="language" className="mr-2">
-                언어 선택:
-            </label>
+            <h2 className="text-lg font-semibold mb-2">언어 필터</h2>
             <select
-                id="language"
-                onChange={(e) => onFilterChange(e.target.value)} // 언어 선택 시 호출
-                className="border p-1"
+                value={selectedLanguage}
+                onChange={handleLanguageChange}
+                className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none"
             >
-                <option value="">모두 보기</option>
-                {languages.map((language) => {
-                    return (
-                        <option key={language} value={language}>
-                            {language} {/* 언어 옵션 */}
-                        </option>
-                    );
-                })}
+                {languages.map((language, index) => (
+                    <option key={index} value={language}>
+                        {language}
+                    </option>
+                ))}
             </select>
         </div>
     );
