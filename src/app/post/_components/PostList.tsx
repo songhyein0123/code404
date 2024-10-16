@@ -1,90 +1,83 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-interface Post {
-    id: number;
-    title: string;
-    author: string;
-    date: string;
-    hashtags: string[];
-}
+import { Post } from "./PostMockData"; // mock_data를 PostMockData.ts에서 import
+
+const POSTS_PER_PAGE = 5; // 페이지당 보여줄 게시글 수
 
 interface PostListProps {
-    posts: Post[]; // 게시글 배열
+    posts: Post[]; // Post 인터페이스를 PostMockData.ts에서 가져옴
 }
 
 const PostList = ({ posts }: PostListProps) => {
     const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-    const postsPerPage = 5; // 한 페이지에 표시할 게시글 수
 
-    // 현재 페이지에 해당하는 게시글을 가져오는 함수
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+    // 전체 페이지 수 계산
+    const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 
-    // 페이지네이션 버튼 클릭 시 페이지 변경 함수
-    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    // 현재 페이지에 해당하는 게시글 가져오기
+    const currentPosts = posts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
 
-    // 페이지 이전/다음 함수
-    const nextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
+    // 페이지 이동 함수
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
     };
-
-    const prevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    // 총 페이지 수
-    const totalPages = Math.ceil(posts.length / postsPerPage);
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4">게시글 목록</h2>
-            <ul className="space-y-4">
+            <div className="divide-y divide-gray-300">
                 {currentPosts.map((post) => (
-                    <li key={post.id} className="border p-4 rounded-md">
-                        <h3 className="text-lg font-semibold">{post.title}</h3>
-                        <p className="text-gray-600">{post.author}</p>
-                        <p className="text-gray-400">{post.date}</p>
-                        <p className="text-sm">{post.hashtags.join(", ")}</p>
-                    </li>
+                    <div key={post.id} className="border-b-2 border-gray-500 py-4">
+                        {/* 첫 번째 줄: 제목 */}
+                        <h2 className="text-xl font-bold mb-1">{post.title}</h2>
+
+                        {/* 두 번째 줄: 작성자, 날짜, 해시태그 */}
+                        <div className="text-sm text-gray-600 flex flex-wrap items-center">
+                            <span className="mr-2">{post.author}</span>
+                            <span className="mr-2">· {post.date}</span>
+                            <div className="flex flex-wrap">
+                                {post.hashtags.map((tag, index) => (
+                                    <span key={index} className="text-blue-500 mr-2">
+                                        {" "}
+                                        {tag}{" "}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
 
             {/* 페이지네이션 */}
-            <div className="flex justify-center mt-4 items-center">
+            <div className="flex justify-center items-center space-x-2 mt-4">
+                {/* 이전 페이지로 이동 */}
                 <button
-                    onClick={prevPage}
-                    className={`mx-1 px-4 py-2 border rounded-md ${currentPage === 1 ? "disabled:opacity-50" : ""}`}
-                    disabled={currentPage === 1} // 첫 페이지에서는 비활성화
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
                 >
-                    &lt; {/* 이전 페이지 화살표 */}
+                    이전
                 </button>
 
                 {/* 페이지 번호 */}
-                {Array.from({ length: totalPages }, (_, index) => (
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
                     <button
-                        key={index + 1}
-                        onClick={() => paginate(index + 1)}
-                        className={`mx-1 px-4 py-2 border rounded-md ${
-                            currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-white text-blue-500"
-                        }`}
+                        key={pageNumber}
+                        onClick={() => handlePageChange(pageNumber)}
+                        className={`px-3 py-1 ${
+                            currentPage === pageNumber ? "bg-blue-500 text-white" : "bg-gray-300"
+                        } rounded hover:bg-gray-400`}
                     >
-                        {index + 1} {/* 페이지 번호 */}
+                        {pageNumber}
                     </button>
                 ))}
 
+                {/* 다음 페이지로 이동 */}
                 <button
-                    onClick={nextPage}
-                    className={`mx-1 px-4 py-2 border rounded-md ${
-                        currentPage === totalPages ? "disabled:opacity-50" : ""
-                    }`}
-                    disabled={currentPage === totalPages} // 마지막 페이지에서는 비활성화
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
                 >
-                    &gt; {/* 다음 페이지 화살표 */}
+                    다음
                 </button>
             </div>
         </div>
