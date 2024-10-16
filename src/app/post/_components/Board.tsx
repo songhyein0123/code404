@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import SortDropdown from "./SortDropdown";
 import { Search } from "./Search";
 
@@ -164,6 +165,7 @@ export default function Board() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const totalPosts = mock_data.length;
     const totalPages = Math.ceil(totalPosts / PostsPerPage);
+    const router = useRouter();
 
     // 페이지 변경 함수
     const handlePageChange = (page: number) => {
@@ -172,8 +174,20 @@ export default function Board() {
         setCurrentPage(page);
     };
 
+    // 정렬 로직 추가(최신순, 또는 게시글 이름 순)
+    const sortedPosts = [...mock_data].sort((a, b) => {
+        if (sortOrder === "latest") {
+            // 최신순으로 정렬(날짜를 기준으로 내림치순)
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        } else if (sortOrder === "title") {
+            // 게시글 이름 순으로 정렬(알파벳 순으로 정렬)
+            return a.title.localeCompare(b.title);
+        }
+        return 0;
+    });
+
     // 현재 페이지에 표시될 게시글을 계산
-    const paginatedPosts = mock_data.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
+    const paginatedPosts = sortedPosts.slice((currentPage - 1) * PostsPerPage, currentPage * PostsPerPage);
 
     // 정렬 로직 추가: 최신순 또는 좋아요 순으로 정렬
     const handleSortChange = (value: string) => {
@@ -194,6 +208,11 @@ export default function Board() {
 
     // 게시글의 해시태그에서 중복 없는 해시태그 목록 추출하는 함수
     const allHashtags = Array.from(new Set(mock_data.flatMap((post) => post.hashtags)));
+
+    // 글쓰기 버튼 클릭 시 post/write 페이지로 이동
+    const handleWriteClick = () => {
+        router.push("/post/write");
+    };
 
     return (
         <div className="p-4 max-w-3xl mx-auto">
@@ -226,7 +245,10 @@ export default function Board() {
                         언어 선택
                     </button>
                     {isDropdownOpen && (
-                        <div className="absolute mt-2 bg-white border rounded shadlw-lg">
+                        <div
+                            className="absolute bottom-full mb-2 bg-white border rounded shadow-lg max-h-40 overflow-y-auto"
+                            style={{ width: "200px" }} // 드롭다운 크기 설정
+                        >
                             {allHashtags.map((tag) => (
                                 <div key={tag} className="px-4 py-2">
                                     <label className="flex item-center">
@@ -245,7 +267,9 @@ export default function Board() {
                 </div>
 
                 {/* 글쓰기 버튼 */}
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">글쓰기</button>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleWriteClick}>
+                    글쓰기
+                </button>
             </div>
 
             {/* 페이지네이션 */}
