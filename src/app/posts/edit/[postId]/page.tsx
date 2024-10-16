@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import TitleInput from "@/app/post/write/_components/TitleInput";
-import MarkdownEditor from "@/app/post/write/_components/MarkdownEditor";
-import HashtagInput from "@/app/post/write/_components/HashtagInput";
+import TitleInput from "@/app/posts/edit/[postId]/_components/TitleInput";
+import MarkdownEditor from "@/app/posts/edit/[postId]/_components/MarkdownEditor";
+import HashtagInput from "@/app/posts/edit/[postId]/_components/HashtagInput";
 
 interface PostData {
     title: string;

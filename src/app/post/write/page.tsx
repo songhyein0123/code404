@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import TitleInput from "./_components/TitleInput";
-import HashtagInput from "./_components/HashtagInput";
-import MarkdownEditor from "./_components/MarkdownEditor";
+import TitleInput from "../../posts/edit/[postId]/_components/TitleInput";
+import HashtagInput from "../../posts/edit/[postId]/_components/HashtagInput";
+import MarkdownEditor from "../../posts/edit/[postId]/_components/MarkdownEditor";
 import { useRouter } from "next/navigation";
 import { Post } from "../_components/PostMockData"; // Post 인터페이스 import
 
