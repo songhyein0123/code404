@@ -9,7 +9,7 @@ export function Search({ onSearch }: SearchProps) {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = () => {
-        // 입력되 검색어를 부모 컴포넌트로 전달
+        // 입력된 검색어를 부모 컴포넌트로 전달
         onSearch(searchTerm);
     };
     return (
