@@ -39,7 +39,7 @@ const MarkdownEditor = forwardRef((props: MarkdownEditorProps, ref) => {
                 height="400px"
                 initialEditType="markdown"
                 useCommandShortcut={false}
-                onChange={handleEditorChange}
+                onChange={handleEditorChange} // ref 대신 onChange 이벤트로 에디터 핸들링
             />
         </div>
     );
