@@ -47,6 +47,13 @@ export default function WritePostPage() {
         setContent(newContent);
     }, []);
 
+    // 작성 완료 버튼 클릭 처리 함수
+    const handleSubmit = useCallback(() => {
+        // 작성된 내용을 서버에 저장하는 로직 추가
+        console.log({ title, hashtags, content }); // 예시로 콘솔에 출력
+        // 여기에 API 요청 등을 추가
+    }, [title, hashtags, content]);
+
     return (
         <div className="container mx-auto p-4">
             <TitleInput title={title} onTitleChange={handleTitleChange} />
@@ -59,7 +66,9 @@ export default function WritePostPage() {
             />
             <MarkdownEditor onEditorChange={handleEditorChange} />
             <div className="mt-4">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded">작성 완료</button>
+                <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
+                    작성 완료
+                </button>
             </div>
         </div>
     );
