@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Post } from "./PostMockData"; // mock_data를 PostMockData.ts에서 import
 
 const POSTS_PER_PAGE = 5; // 페이지당 보여줄 게시글 수
