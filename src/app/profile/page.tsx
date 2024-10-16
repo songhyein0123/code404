@@ -2,11 +2,11 @@
 
 import "../../app/globals.css";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import ProfileForm from "./components/ProfileForm";
 import Posts from "./components/Posts";
 import LikedPosts from "./components/LikePosts";
+import Image from "next/image";
 
 interface User {
     id: string;
@@ -19,12 +19,11 @@ const ProfilePage = () => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<"profile" | "myPosts" | "likedPosts">("profile");
-    const router = useRouter();
     const supabase = createClient();
 
     useEffect(() => {
         fetchUserData();
-    }, [supabase]);
+    }, []);
 
     const fetchUserData = async () => {
         setLoading(true);
@@ -71,10 +70,12 @@ const ProfilePage = () => {
                 <div className="flex flex-col items-center mb-4">
                     <div className="w-40 h-40 rounded-full bg-white flex items-center justify-center">
                         {user?.profile_url ? (
-                            <img
+                            <Image
                                 src={user.profile_url}
                                 alt="Profile"
                                 className="rounded-full w-full h-full object-cover"
+                                width={160}
+                                height={160}
                             />
                         ) : (
                             <p>사진 없음</p>

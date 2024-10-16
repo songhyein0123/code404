@@ -1,4 +1,5 @@
-// 수정된 코드 예시
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
