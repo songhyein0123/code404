@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Post } from "./PostMockData"; // mock_data를 PostMockData.ts에서 import
 
+
 const POSTS_PER_PAGE = 5; // 페이지당 보여줄 게시글 수
 
 interface PostListProps {
@@ -13,6 +14,7 @@ const PostList = ({ posts }: PostListProps) => {
 
     // 전체 페이지 수 계산
     const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+
 
     // 현재 페이지에 해당하는 게시글 가져오기
     const currentPosts = posts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
