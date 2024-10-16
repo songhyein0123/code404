@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import TitleInput from "@/components/TitleInput";
-import MarkdownEditor from "@/components/MarkdownEditor";
-import HashtagInput from "@/components/HashtagInput";
+import TitleInput from "@/app/post/write/_components/TitleInput";
+import MarkdownEditor from "@/app/post/write/_components/MarkdownEditor";
+import HashtagInput from "@/app/post/write/_components/HashtagInput";
 
 interface PostData {
     title: string;
@@ -23,7 +23,9 @@ const EditPostPage = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchPostData();
+        if (postId) {
+            fetchPostData();
+        }
     }, [postId]);
 
     const fetchPostData = async () => {
@@ -33,7 +35,7 @@ const EditPostPage = () => {
             const { data, error } = await supabase
                 .from("Post")
                 .select("title, content, hashtags")
-                .eq("board_id", postId)
+                .eq("board_id", Number(postId)) // 숫자로 변환하여 비교
                 .single();
 
             if (error) throw error;
@@ -63,7 +65,7 @@ const EditPostPage = () => {
                     content: post.content,
                     hashtags: post.hashtags
                 })
-                .eq("board_id", postId);
+                .eq("board_id", Number(postId)); // 숫자로 변환하여 비교
 
             if (error) throw error;
 
