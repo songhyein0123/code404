@@ -66,8 +66,6 @@ export async function signout() {
     const { error } = await supabase.auth.signOut();
     if (error) return { success: false, error: error.message };
 
-    revalidatePath("/", "layout");
-
     return { success: true };
 }
 
@@ -84,5 +82,6 @@ export async function getUser() {
 
 // 임시 방편 함수
 export async function navigate() {
+    revalidatePath("/", "layout");
     redirect("/");
 }

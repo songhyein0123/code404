@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 interface User {
     id: string;
@@ -18,6 +19,7 @@ const ProfileForm = ({ user, setUser, fetchUserData }: ProfileFormProps) => {
     const [profilePic, setProfilePic] = useState<File | null>(null);
     const [newUserName, setNewUserName] = useState<string>(user?.user_name || "");
     const supabase = createClient();
+    const router = useRouter();
 
     const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -65,8 +67,8 @@ const ProfileForm = ({ user, setUser, fetchUserData }: ProfileFormProps) => {
                 throw updateError;
             }
 
-            await fetchUserData(); // 최신 데이터 가져오기
-
+            // await fetchUserData(); // 최신 데이터 가져오기
+            router.refresh();
             setUser({ ...user, user_name: newUserName, profile_url });
             alert("회원 정보가 성공적으로 업데이트되었습니다.");
         } catch (error) {
