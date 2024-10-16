@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { Post } from "./PostMockData";
 import Search from "../_components/Search";
 import SortDropdown from "./SortDropdown";
@@ -35,6 +36,7 @@ const PostList = ({ posts }: PostListProps) => {
 
     // 전체 페이지 수 계산
     const totalPages = Math.ceil(sortedPosts().length / POSTS_PER_PAGE);
+
 
     // 현재 페이지에 해당하는 게시글 가져오기
     const currentPosts = sortedPosts().slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
