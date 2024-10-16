@@ -1,7 +1,6 @@
-"use client";
-
-import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+// 수정된 코드 예시
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Modal from "../modal";
 import { FaFlag, FaTrash, FaHeart } from "react-icons/fa";
@@ -28,6 +27,8 @@ interface PostWithUser extends Post {
 const PostDetailPage = () => {
     const { postId } = useParams() as { postId: string };
     const router = useRouter();
+    const supabase = createClient();
+
     const [post, setPost] = useState<PostWithUser | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -37,14 +38,15 @@ const PostDetailPage = () => {
     const [userLikesPost, setUserLikesPost] = useState<boolean>(false); // 사용자가 좋아요를 눌렀는지 상태 추가
     const [currentUserId, setCurrentUserId] = useState<string | null>(null); // 현재 사용자 ID 상태 추가
 
-    const supabase = createClient();
-
     useEffect(() => {
-        fetchCurrentUser();
-        if (postId) {
-            fetchPost();
-            fetchLikes();
-        }
+        const fetchData = async () => {
+            await fetchCurrentUser();
+            if (postId) {
+                await fetchPost();
+                await fetchLikes();
+            }
+        };
+        fetchData();
     }, [postId]);
 
     const fetchCurrentUser = async () => {
@@ -79,7 +81,7 @@ const PostDetailPage = () => {
                 const postData: PostWithUser = {
                     ...data,
                     user_name: data.users?.user_name,
-                    hashtags: data.hashtags ? data.hashtags.map((h: any) => h.hashtag) : [] // 해시태그 배열 설정
+                    hashtags: data.hashtags ? data.hashtags.map((h: { hashtag: string }) => h.hashtag) : [] // 해시태그 배열 설정
                 };
                 setPost(postData);
             } else {
@@ -112,7 +114,7 @@ const PostDetailPage = () => {
 
             // 사용자가 이 게시물을 좋아요했는지 확인
             if (userId) {
-                const userLikesPost = likeData.some((like: any) => like.user_id === userId);
+                const userLikesPost = likeData.some((like: { user_id: string }) => like.user_id === userId);
                 setUserLikesPost(userLikesPost);
             }
         } catch (err) {
@@ -283,7 +285,7 @@ const PostDetailPage = () => {
                                     onClick={() => {
                                         console.log("수정하기 버튼 클릭됨");
                                     }}
-                                    className="ml-2 px-4 py-2 bg-[#00D084] text-white rounded-md hover:bg-[#FF8A00] transition"
+                                    className="ml-2 px-4 py-2 bg-[#00D084] text-white rounded-md hover:bg-[#FF8A00] transition rounded-md"
                                 >
                                     수정하기
                                 </button>
