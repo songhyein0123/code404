@@ -31,6 +31,11 @@ const ProfileForm = ({ user, setUser, fetchUserData }: ProfileFormProps) => {
             return;
         }
 
+        if (newUserName === user.user_name && !profilePic) {
+            alert("수정한 사항이 없습니다.");
+            return;
+        }
+
         try {
             let profile_url = user.profile_url;
 
@@ -93,7 +98,7 @@ const ProfileForm = ({ user, setUser, fetchUserData }: ProfileFormProps) => {
             </div>
             <button
                 onClick={handleProfileUpdate}
-                className="bg-neonGreen text-black px-4 py-2 rounded hover:bg-orange transition duration-300 shadow-md hover:shadow-lg"
+                className="ml-2 px-4 py-2 bg-[#00D084] text-white rounded-md hover:bg-[#FF8A00] transition"
             >
                 회원 정보 업데이트
             </button>

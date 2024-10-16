@@ -242,17 +242,15 @@ const PostDetailPage = () => {
                                 <FaFlag />
                             </button>
                             {post.user_id === currentUserId && (
-                                <>
-                                    <button
-                                        onClick={handleDeletePost}
-                                        className={`p-2 ${
-                                            deleting ? "bg-gray-400" : "bg-gray-300"
-                                        } text-black rounded-md hover:bg-gray-400 transition`}
-                                        disabled={deleting}
-                                    >
-                                        <FaTrash /> {/* 삭제 아이콘 */}
-                                    </button>
-                                </>
+                                <button
+                                    onClick={handleDeletePost}
+                                    className={`p-2 ${
+                                        deleting ? "bg-gray-400" : "bg-gray-300"
+                                    } text-black rounded-md hover:bg-gray-400 transition`}
+                                    disabled={deleting}
+                                >
+                                    <FaTrash />
+                                </button>
                             )}
                         </div>
                         <div className="mb-4 p-4 bg-gray-200 rounded-lg">
