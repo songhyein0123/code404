@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Skeleton from "./_components/UserSkeleton";
+import Button from "../../_components/Button";
 
 const pageSize = 16; // 페이지당 보여줄 게시글 수 5개 고정
 const supabase = createClient();
@@ -141,7 +142,7 @@ const UserPage = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 <div className="flex items-end text-black mb-3 w-full max-w-[850px]">
                     {/* 필터 선택 */}
                     <select value={filter} onChange={handleFilterChange} className="ml-auto text-center">
@@ -175,42 +176,34 @@ const UserPage = () => {
                             </div>
                             <div className="flex justify-around">
                                 {user.activate ? (
-                                    <button
-                                        className="w-20 bg-red-400 font-bold"
-                                        onClick={() => {
-                                            if (window.confirm("정말 탈퇴하시겠습니까?")) {
-                                                toggleVisibilityMutation.mutate({
-                                                    user_id: user.id,
-                                                    currentStatus: user.activate
-                                                });
-                                            }
-                                        }}
-                                    >
-                                        {user.activate ? "탈퇴" : ""}
-                                    </button>
+                                    <Button
+                                        confirmMessage="정말 탈퇴하시겠습니까?"
+                                        buttonText="탈퇴"
+                                        buttonColor="bg-red-400"
+                                        onClick={() =>
+                                            toggleVisibilityMutation.mutate({
+                                                user_id: user.id,
+                                                currentStatus: user.activate
+                                            })
+                                        }
+                                    />
                                 ) : (
                                     ""
                                 )}
 
-                                <button
-                                    className="w-20 bg-gray-400 font-bold"
-                                    onClick={() => {
-                                        if (
-                                            window.confirm(
-                                                user.activate
-                                                    ? "정말 비활성화 하시겠습니까?"
-                                                    : "정말 활성화 하시겠습니까?"
-                                            )
-                                        ) {
-                                            toggleVisibilityMutation.mutate({
-                                                user_id: user.id,
-                                                currentStatus: user.activate
-                                            });
-                                        }
-                                    }}
-                                >
-                                    {user.activate ? "비활성화" : "활성화"}
-                                </button>
+                                <Button
+                                    confirmMessage={
+                                        user.activate ? "정말 비활성화 하시겠습니까?" : "정말 활성화 하시겠습니까?"
+                                    }
+                                    buttonText={user.activate ? "비활성화" : "활성화"}
+                                    buttonColor="bg-gray-400"
+                                    onClick={() =>
+                                        toggleVisibilityMutation.mutate({
+                                            user_id: user.id,
+                                            currentStatus: user.activate
+                                        })
+                                    }
+                                />
                             </div>
                         </div>
                     ))}

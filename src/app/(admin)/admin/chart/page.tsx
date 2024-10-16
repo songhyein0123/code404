@@ -103,8 +103,8 @@ const UserPostChart = () => {
     };
 
     return (
-        <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
-            <div className="w-[800px]">
+        <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
+            <div className="w-[800px] bg-[#E5E5E5]">
                 <Line data={chartUserData} />
                 <div className="w-[800px]">
                     <Line data={chartPostData} />
