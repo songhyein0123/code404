@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { User } from "../../types/User";
-import Image from "next/image";
 import { navigate } from "@/services/authService";
 import { useRouter } from "next/navigation";
 
