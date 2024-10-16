@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search } from "./_components/Search";
-import SortDropdown from "./_components/SortDropdown";
+import { SortDropdown } from "./_components/SortDropdown";
 import LanguageFilter from "./_components/LanguageFilter";
 import PostList from "./_components/PostList";
 
@@ -212,19 +212,30 @@ export default function post() {
     };
 
     return (
-        <div>
+        <div className="container mx-auto px-4">
             <h1 className="text-2xl font-bold text-center my-8">Main Page</h1>
-            {/* 검색 컴포넌트 */}
-            <Search onSearch={handleSearch} />
 
-            {/* 정렬 드롭다운 컴포넌트 */}
-            <SortDropdown onSortChange={handleSortChange} />
-
-            {/* 언어 필터 컴포넌트 */}
-            <LanguageFilter allHashtags={allHashtags} selectedTags={selectedTags} onTagChange={handleTagChange} />
+            {/* 정렬 및 검색 컴포넌트 */}
+            <div className="flex justify-between mb-4">
+                <div className="flex space-x-4">
+                    <SortDropdown onSortChange={handleSortChange} />
+                    <SortDropdown onSortChange={handleSortChange} />
+                </div>
+                <div>
+                    <Search onSearch={handleSearch} />
+                </div>
+            </div>
 
             {/* 게시글 리스트 컴포넌트 */}
-            <PostList posts={posts} />
+            <div className="mb-4">
+                <PostList posts={mock_data} />
+            </div>
+
+            {/* 언어 필터 및 글쓰기 버튼 컴포넌트 */}
+            <div className="flex justify-between mb-4">
+                <LanguageFilter />
+                <button className="btn-primary">글쓰기</button>
+            </div>
         </div>
     );
 }
