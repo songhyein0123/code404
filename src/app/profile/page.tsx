@@ -7,21 +7,21 @@ import { FaHeart, FaEdit } from "react-icons/fa";
 
 interface User {
     email: string;
-    id: string; // 사용자 ID (UUID)
-    user_name: string; // 사용자 이름
-    profile_url: string; // 프로필 이미지 URL
+    id: string;
+    user_name: string;
+    profile_url: string;
 }
 
 interface Post {
-    board_id: string; // 게시물 ID (UUID)
+    board_id: string;
     title: string;
     created_at: string;
-    user_id: string; // 작성자 사용자 ID (UUID)
+    user_id: string;
 }
 
 interface LikedPost {
-    board_id: string; // 좋아요한 게시물의 ID (UUID)
-    created_at: string; // 좋아요 생성 시간
+    board_id: string;
+    created_at: string;
 }
 
 const MyPage = () => {
@@ -40,7 +40,6 @@ const MyPage = () => {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
 
-    // 유저 데이터와 게시글 및 좋아요한 게시글 데이터를 불러오는 함수
     useEffect(() => {
         const fetchUserData = async () => {
             const { data, error } = await supabase.auth.getUser();
@@ -112,26 +111,27 @@ const MyPage = () => {
     };
 
     // 회원 정보 변경 처리
+    // ...
     const handleProfileUpdate = async () => {
         if (!user || !user.id) {
             console.error("User ID is not defined");
-            return; // user.id가 undefined인 경우 업데이트를 중단
+            return;
         }
 
         try {
             let profile_url = user.profile_url;
             if (profilePic) {
-                const fileExt = profilePic.name.split(".").pop(); // 파일 확장자 가져오기
-                const fileName = `${user.id}.${fileExt}`; // 사용자 ID로 파일 이름 설정
-                const filePath = `user_profile_img/${user.id}/${fileName}`; // 파일 경로
+                const fileExt = profilePic.name.split(".").pop();
+                const fileName = `${user.id}.${fileExt}`;
+                const filePath = `user_profile_img/${user.id}/${fileName}`;
 
                 const { data, error } = await supabase.storage.from("user_profile_img").upload(filePath, profilePic, {
                     upsert: true
                 });
                 if (error) throw error;
 
-                // 업로드한 파일의 공개 URL 가져오기
-                profile_url = supabase.storage.from("user_profile_img").getPublicUrl(filePath).publicURL;
+                const { publicURL } = supabase.storage.from("user_profile_img").getPublicUrl(filePath);
+                profile_url = publicURL || "";
             }
 
             const { error: updateError } = await supabase
@@ -144,7 +144,6 @@ const MyPage = () => {
 
             if (updateError) throw updateError;
 
-            // 업데이트된 정보를 다시 불러와서 상태 업데이트
             const { data: updatedUser, error: fetchError } = await supabase
                 .from("User")
                 .select("user_name, profile_url")
@@ -161,12 +160,10 @@ const MyPage = () => {
         }
     };
 
-    // 게시글 상세 페이지로 이동하는 함수 추가
     const handlePostClick = (postId: string) => {
-        router.push(`/posts/${postId}`); // 게시글 상세 페이지로 이동
+        router.push(`/posts/${postId}`);
     };
 
-    // 좋아요 토글 처리
     const handleLikeToggle = async (postId: string) => {
         if (!user) return;
 
@@ -249,7 +246,7 @@ const MyPage = () => {
                                     <div
                                         key={post.board_id}
                                         className="border p-4 rounded-lg"
-                                        onClick={() => handlePostClick(post.board_id)} // 게시글 클릭 시 이동 처리
+                                        onClick={() => handlePostClick(post.board_id)}
                                     >
                                         <h4 className="font-bold">{post.title}</h4>
                                         <p>{new Date(post.created_at).toLocaleString()}</p>
@@ -291,7 +288,7 @@ const MyPage = () => {
                                     <div
                                         key={likedPost.board_id}
                                         className="border p-4 rounded-lg"
-                                        onClick={() => handlePostClick(likedPost.board_id)} // 좋아요한 게시글 클릭 시 이동 처리
+                                        onClick={() => handlePostClick(likedPost.board_id)}
                                     >
                                         <h4 className="font-bold">{likedPost.title}</h4>
                                         <p>{new Date(likedPost.created_at).toLocaleString()}</p>
@@ -330,7 +327,6 @@ const MyPage = () => {
                     )}
                 </div>
                 <h1 className="text-2xl font-bold mt-4">{user?.user_name}</h1>
-                <p className="text-gray-600">{user?.email}</p>
             </div>
             <div className="flex mb-8">
                 <button

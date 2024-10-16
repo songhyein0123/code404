@@ -205,7 +205,9 @@ const PostDetailPage = () => {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen py-10">
+        <div className="bg-[#2B2D42] min-h-screen py-10">
+            {" "}
+            {/* 배경색을 다크 그레이로 설정 */}
             <main className="container mx-auto bg-white shadow-lg rounded-lg p-6 mt-16">
                 {loading ? (
                     <p className="text-center text-gray-500">Loading...</p>
@@ -243,7 +245,9 @@ const PostDetailPage = () => {
                             )}
                         </div>
                         <div className="flex items-center mb-4">
-                            <button onClick={handleLike} className="flex items-center text-red-500">
+                            <button onClick={handleLike} className="flex items-center text-[#00D084]">
+                                {" "}
+                                {/* 버튼 배경색을 네온 그린으로 설정 */}
                                 <FaHeart className={`mr-1 ${userLikesPost ? "text-red-600" : "text-gray-400"}`} />
                                 {likes}
                             </button>
@@ -259,7 +263,7 @@ const PostDetailPage = () => {
                                 onClick={() => {
                                     console.log("수정하기 버튼 클릭됨");
                                 }}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                                className="px-4 py-2 bg-[#00D084] text-white rounded-md hover:bg-[#FF8A00] transition" // 버튼 배경색을 네온 그린으로 설정, 호버 색상을 오렌지로 설정
                             >
                                 수정하기
                             </button>
