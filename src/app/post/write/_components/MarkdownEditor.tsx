@@ -15,7 +15,7 @@ const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.
 
 const MarkdownEditor = ({ onEditorChange }: MarkdownEditorProps) => {
     // 'useRef'에서 'ToastEditor' 타입을 사용
-    const editorRef = useRef<ToastEditor>(null);
+    const editorRef = useRef<ToastEditor | null>(null);
 
     // 에디터 내용 변경 핸들러
     const handleEditorChange = () => {
@@ -29,13 +29,12 @@ const MarkdownEditor = ({ onEditorChange }: MarkdownEditorProps) => {
         <div>
             <label className="block text-lg font-medium mb-2">내용 작성</label>
             <Editor
-                ref={editorRef}
                 initialValue="내용을 작성하세요."
                 previewStyle="vertical"
                 height="400px"
                 initialEditType="markdown"
                 useCommandShortcut={false}
-                onChange={handleEditorChange}
+                onChange={handleEditorChange} // ref 대신 onChange 이벤트로 에디터 핸들링
             />
         </div>
     );
