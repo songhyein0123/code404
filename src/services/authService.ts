@@ -41,7 +41,7 @@ export async function signinCheck(data: AccountLoginInfo) {
     const { data: user } = await supabase.auth.signInWithPassword(info);
 
     const { data: res } = await supabase.from("User").select("activate").eq("id", user.user?.id).single();
-    const { error } = await supabase.auth.signOut();
+    await supabase.auth.signOut();
 
     return res?.activate;
 }
@@ -74,7 +74,7 @@ export async function signout() {
 export async function getUser() {
     const supabase = createClient();
 
-    const { data, error } = await supabase.auth.getUser();
+    const { data } = await supabase.auth.getUser();
     const userId: undefined | string = data.user?.id;
 
     const user: User | null = await getUserData(userId);
