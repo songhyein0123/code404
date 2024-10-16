@@ -45,15 +45,21 @@ const RightItem = ({ user }: { user: User }) => {
 
     return (
         <div
-            className="relative flex flex-row items-center gap-[15px] cursor-pointer bg-blue-300"
+            className="relative flex flex-row items-center gap-4 cursor-pointer h-full"
             ref={popupRef}
             onClick={() => setIsOpen((isOpen) => !isOpen)}
         >
-            <span className="text-black">{user.user_name}</span>
-            <Image className="flex rounded-full border-none" src={user.profile_url} alt={""} width={70} height={70} />
+            <span className="text-white font-semibold">{user.user_name}</span>
+            <Image
+                className="rounded-full border-none bg-white"
+                src={user.profile_url}
+                alt={""}
+                width={60}
+                height={60}
+            />
             {isOpen && (
                 <div
-                    className="absolute top-full w-[100px] h-auto flex flex-col justify-start items-center bg-red-300"
+                    className="absolute top-[110%] flex flex-col justify-start items-center bg-red-300"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <Link href={"/profile"}>
