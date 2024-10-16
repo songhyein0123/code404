@@ -8,15 +8,15 @@ const Navibar = async () => {
 
     return (
         <header className="fixed top-0 w-full">
-            <nav className="fixed top-0 flex flex-row justify-between items-center w-full h-[80px] bg-gray-500">
+            <nav className="px-8 flex flex-row justify-between w-full h-[80px] bg-[#181F38]">
                 <div></div>
                 <div>
                     {user ? (
                         <RightItem user={user} />
                     ) : (
-                        <div className="flex flex-row gap-[15px]">
-                            <Link href={"/auth/login"}>
-                                <button>로그인</button>
+                        <div className="relative flex flex-row items-center gap-8 w-auto h-full">
+                            <Link className="flex h-full items-center" href={"/auth/login"}>
+                                <button className="h-1/2 bg-[#00D084] ">로그인</button>
                             </Link>
                             <Link href={"/auth/register"}>
                                 <button>회원가입</button>
