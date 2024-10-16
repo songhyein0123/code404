@@ -7,9 +7,11 @@ import { Editor as ToastEditor } from "@toast-ui/react-editor";
 
 // ToastUI Editor를 동적으로 불러오기
 const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.Editor), { ssr: false });
+
 // 인터페이스 정의
 interface MarkdownEditorProps {
-    onEditorChange: (content: string) => void;
+    content: string;
+    setContent: (content: string) => void; // content를 string 타입으로 받음
 }
 
 // forwardRef를 사용하여 ref를 받을 수 있도록 설정
@@ -25,7 +27,7 @@ const MarkdownEditor = forwardRef((props: MarkdownEditorProps, ref) => {
     const handleEditorChange = () => {
         const editorInstance = editorRef.current?.getInstance();
         if (editorInstance) {
-            props.onEditorChange(editorInstance.getMarkdown());
+            props.setContent(editorInstance.getMarkdown()); // setContent로 변경된 내용을 전달
         }
     };
 
@@ -33,16 +35,17 @@ const MarkdownEditor = forwardRef((props: MarkdownEditorProps, ref) => {
         <div>
             <label className="block text-lg font-medium mb-2">내용 작성</label>
             <Editor
-                initialValue="내용을 작성하세요."
+                initialValue={props.content} // content를 initialValue로 설정
                 previewStyle="vertical"
                 height="400px"
                 initialEditType="markdown"
                 useCommandShortcut={false}
-                onChange={handleEditorChange}
+                onChange={handleEditorChange} // ref 대신 onChange 이벤트로 에디터 핸들링
             />
         </div>
     );
 });
+
 // displayName 설정
 MarkdownEditor.displayName = "MarkdownEditor";
 

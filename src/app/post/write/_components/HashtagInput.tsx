@@ -8,7 +8,6 @@ interface HashtagInputProps {
     removeTag: (tag: string) => void;
 }
 
-// 해시태그 입력 컴포넌트
 const HashtagInput = ({ hashtags, currentTag, onTagChange, onTagKeyPress, removeTag }: HashtagInputProps) => {
     return (
         <div className="mb-4">

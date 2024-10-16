@@ -15,7 +15,7 @@ interface ProfileFormProps {
     fetchUserData: () => Promise<void>;
 }
 
-const ProfileForm = ({ user, setUser, fetchUserData }: ProfileFormProps) => {
+const ProfileForm = ({ user, setUser }: ProfileFormProps) => {
     const [profilePic, setProfilePic] = useState<File | null>(null);
     const [newUserName, setNewUserName] = useState<string>(user?.user_name || "");
     const supabase = createClient();

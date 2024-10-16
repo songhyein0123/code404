@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 // 인터페이스 정의
 interface TitleInputProps {
     title: string;
@@ -23,4 +21,4 @@ const TitleInput = ({ title, onTitleChange }: TitleInputProps) => {
     );
 };
 
-export default React.memo(TitleInput);
+export default TitleInput;

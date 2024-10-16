@@ -4,6 +4,8 @@ import { useState, useCallback } from "react";
 import TitleInput from "./_components/TitleInput";
 import HashtagInput from "./_components/HashtagInput";
 import MarkdownEditor from "./_components/MarkdownEditor";
+import { useRouter } from "next/navigation";
+import { Post } from "../_components/PostMockData"; // Post 인터페이스 import
 
 // 글쓰기 페이지
 export default function WritePostPage() {
@@ -11,6 +13,7 @@ export default function WritePostPage() {
     const [hashtags, setHashtags] = useState<string[]>([]);
     const [currentTag, setCurrentTag] = useState("");
     const [content, setContent] = useState("");
+    const router = useRouter();
 
     // 제목 변경 함수
     const handleTitleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,12 +50,22 @@ export default function WritePostPage() {
         setContent(newContent);
     }, []);
 
-    // 작성 완료 버튼 클릭 처리 함수
-    const handleSubmit = useCallback(() => {
-        // 작성된 내용을 서버에 저장하는 로직 추가
-        console.log({ title, hashtags, content }); // 예시로 콘솔에 출력
-        // 여기에 API 요청 등을 추가
-    }, [title, hashtags, content]);
+    // 작성 완료 함수
+    const handleSubmit = () => {
+        const newPost: Post = {
+            id: Date.now(), // 고유 ID 생성
+            title,
+            author: "작성자 이름", // 작성자 이름 설정
+            date: new Date().toISOString(), // 현재 날짜
+            hashtags,
+            content
+        };
+
+        // 추가적인 게시글 저장 로직 (예: API 호출 등)을 여기에 추가
+
+        console.log("게시글 작성 완료:", newPost); // 게시글 정보 로그
+        router.push("/post"); // 게시글 목록 페이지로 이동
+    };
 
     return (
         <div className="container mx-auto p-4">
