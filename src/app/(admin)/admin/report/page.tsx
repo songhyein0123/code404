@@ -114,7 +114,7 @@ const ReportedPostPage = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 {Object.values(groupedPosts || {}).map((post) => (
                     <div className="flex justify-between w-[1000px] h-[100px] my-3 bg-white p-4" key={post.board_id}>
                         <div className="flex flex-col">

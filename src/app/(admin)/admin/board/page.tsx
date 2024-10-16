@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/client";
 import { PostType } from "@/app/(admin)/types/Post";
 import { useState } from "react";
 import Skeleton from "./_components/BoardSkeleton";
+import Button from "../../_components/Button";
+import Link from "next/link";
 
 const pageSize = 5; // 페이지당 보여줄 게시글 수 5개 고정
 const supabase = createClient();
@@ -170,7 +172,7 @@ const PostPage = () => {
 
     return (
         <>
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 <div className="flex items-end text-black mb-1 w-full max-w-[1000px]">
                     {/* 필터 선택 */}
                     <select value={filter} onChange={handleFilterChange} className="ml-auto text-center">
@@ -183,44 +185,37 @@ const PostPage = () => {
                 </div>
                 {posts?.map((post) => (
                     <div className="flex justify-between w-[1000px] h-[100px] my-3 bg-white p-4" key={post.board_id}>
-                        <div className="flex flex-col">
-                            <div className="text-xl w-[800px] text-black">{post.title}</div>
-                            <div className="flex space-x-2 text-gray-500">
-                                <div>{post.user_id?.user_name}님</div>
-                                <div>{new Date(post.created_at).toISOString().replace("T", " ").slice(0, -5)}</div>
+                        <Link href={`/posts/${post.board_id}`}>
+                            <div className="flex flex-col">
+                                <div className="text-xl w-[800px] text-black">{post.title}</div>
+                                <div className="flex space-x-2 text-gray-500">
+                                    <div>{post.user_id?.user_name}님</div>
+                                    <div>{new Date(post.created_at).toISOString().replace("T", " ").slice(0, -5)}</div>
+                                </div>
                             </div>
-                        </div>
-
+                        </Link>
                         <div className="flex space-x-2 self-center">
-                            <button
-                                className="bg-gray-500 text-white p-2 rounded"
-                                onClick={() => {
-                                    if (
-                                        window.confirm(
-                                            post.publicStatus
-                                                ? "정말 공개로 전환하시겠습니까?"
-                                                : "정말 비공개로 전환하시겠습니까?"
-                                        )
-                                    ) {
-                                        toggleVisibilityMutation.mutate({
-                                            boardId: post.board_id,
-                                            currentStatus: post.publicStatus
-                                        });
-                                    }
-                                }}
-                            >
-                                {post.publicStatus ? "비공개" : "공개"}
-                            </button>
-                            <button
-                                className="bg-red-500 text-white p-2 rounded"
-                                onClick={() => {
-                                    if (window.confirm("정말 삭제하시겠습니까?")) {
-                                        deleteMutation.mutate(post.board_id);
-                                    }
-                                }}
-                            >
-                                삭제
-                            </button>
+                            <Button
+                                confirmMessage={
+                                    post.publicStatus
+                                        ? "정말 공개로 전환하시겠습니까?"
+                                        : "정말 비공개로 전환하시겠습니까?"
+                                }
+                                buttonText={post.publicStatus ? "비공개" : "공개"}
+                                buttonColor="bg-[#00D084]"
+                                onClick={() =>
+                                    toggleVisibilityMutation.mutate({
+                                        boardId: post.board_id,
+                                        currentStatus: post.publicStatus
+                                    })
+                                }
+                            />
+                            <Button
+                                confirmMessage="정말 삭제하시겠습니까?"
+                                buttonText="삭제"
+                                buttonColor="bg-red-500"
+                                onClick={() => deleteMutation.mutate(post.board_id)}
+                            />
                         </div>
                     </div>
                 ))}
