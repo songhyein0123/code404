@@ -20,6 +20,8 @@ const PostList = ({ posts }: PostListProps) => {
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+    // 총 페이지 수
+    const totalPages = Math.ceil(posts.length / postsPerPage);
 
     // 페이지네이션 버튼 클릭 시 페이지 변경 함수
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
@@ -36,9 +38,6 @@ const PostList = ({ posts }: PostListProps) => {
             setCurrentPage(currentPage - 1);
         }
     };
-
-    // 총 페이지 수
-    const totalPages = Math.ceil(posts.length / postsPerPage);
 
     return (
         <div>
