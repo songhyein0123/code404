@@ -50,6 +50,7 @@ const RightItem = ({ user }: { user: User }) => {
             onClick={() => setIsOpen((isOpen) => !isOpen)}
         >
             <span className="text-white font-semibold">{user.user_name}</span>
+
             <Image
                 className="rounded-full border-none bg-white"
                 src={user.profile_url}
@@ -63,6 +64,11 @@ const RightItem = ({ user }: { user: User }) => {
                     onClick={(e) => e.stopPropagation()}
                 >
                     <ul>
+                        {user.admin && (
+                            <li>
+                                <Link href={"/admin/"}>관리자 페이지</Link>
+                            </li>
+                        )}
                         <li>
                             <Link href={"/profile"}>마이페이지</Link>
                         </li>
