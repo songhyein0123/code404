@@ -59,7 +59,7 @@ const RightItem = ({ user }: { user: User }) => {
             />
             {isOpen && (
                 <div
-                    className="absolute top-[110%] py-3 px-5 justify-start list-none leading-8 border-[1px] border-black border-solid rounded-md"
+                    className="absolute top-[110%] py-3 px-5 justify-start list-none leading-8 border-[1px] border-black border-solid rounded-md bg-white"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <ul>
