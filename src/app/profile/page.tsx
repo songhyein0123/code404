@@ -66,7 +66,7 @@ const ProfilePage = () => {
 
     return (
         <div className="bg-[#2B2D42] min-h-screen py-10">
-            <div className="container mx-auto mt-32 bg-white text-white p-6 rounded-lg">
+            <div className="container mx-auto mt-14 bg-white text-white p-6 rounded-lg">
                 <div className="flex flex-col items-center mb-4">
                     <div className="w-40 h-40 rounded-full bg-white flex items-center justify-center">
                         {user?.profile_url ? (
