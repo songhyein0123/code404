@@ -50,6 +50,7 @@ const PostDetailPage = () => {
     }, [postId]);
 
     const fetchCurrentUser = async () => {
+        const supabase = createClient();
         const { data: userData, error } = await supabase.auth.getUser();
         if (error) {
             console.error("Error fetching user info:", error);
@@ -59,6 +60,7 @@ const PostDetailPage = () => {
     };
 
     const fetchPost = async () => {
+        const supabase = createClient();
         setLoading(true);
         setError(null);
 
@@ -96,6 +98,7 @@ const PostDetailPage = () => {
     };
 
     const fetchLikes = async () => {
+        const supabase = createClient();
         try {
             const { data: userData } = await supabase.auth.getUser();
             const userId = userData?.user?.id;
