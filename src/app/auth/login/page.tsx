@@ -49,13 +49,14 @@ const Login = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-[100px] flex justify-center items-center">
-            <div className="w-1/3 p-[30px] flex flex-col gap-[20px] border-[1px] border-solid border-black">
-                <div className="flex flex-col justify-start gap-[5px]">
-                    <label className="text-[20px]" htmlFor="이메일">
+            <div className="w-1/4 p-[30px] flex flex-col gap-[20px] rounded-md bg-[#181F38]">
+                <span className="text-[25px] text-white font-semibold w-full text-center mb-3">로그인</span>
+                <div className="flex flex-col justify-start gap-[10px]">
+                    <label className="text-[20px] text-white" htmlFor="이메일">
                         이메일
                     </label>
                     <input
-                        className="border-[1px] border-solid border-black pl-3"
+                        className="border-[1px] border-solid border-black pl-3 py-2 rounded-md"
                         {...register("email")}
                         placeholder="이메일"
                         type="email"
@@ -64,12 +65,12 @@ const Login = () => {
                         <span className="text-[12px] text-red-600">{formState.errors.email.message}</span>
                     )}
                 </div>
-                <div className="flex flex-col justify-start gap-[5px]">
-                    <label className="text-[20px]" htmlFor="비밀번호">
+                <div className="flex flex-col justify-start gap-[10px]">
+                    <label className="text-[20px] text-white" htmlFor="비밀번호">
                         패스워드
                     </label>
                     <input
-                        className="border-[1px] border-solid border-black pl-3"
+                        className="border-[1px] border-solid border-black pl-3 py-2 rounded-md"
                         {...register("password")}
                         placeholder="패스워드"
                         type="password"
@@ -78,7 +79,11 @@ const Login = () => {
                         <span className="text-[12px] text-red-600">{formState.errors.password.message}</span>
                     )}
                 </div>
-                <button className="w-full bg-gray-300" disabled={!formState.isValid} type="submit">
+                <button
+                    className="mt-4 w-full bg-[#00D084] text-white py-2 rounded-md hover:bg-[#FFBA00] disabled:bg-gray-400"
+                    disabled={!formState.isValid}
+                    type="submit"
+                >
                     로그인하기
                 </button>
             </div>
