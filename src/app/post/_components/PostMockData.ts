@@ -8,7 +8,7 @@ export interface Post {
     hashtags: string[];
 }
 
-export const mock_data: Post[] = [
+export const PostMockData: Post[] = [
     {
         id: 1,
         title: "TypeScript를 시작하는 방법",
