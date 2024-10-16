@@ -30,6 +30,22 @@ export async function signup(data: AccountInfo) {
     return error ? { success: false, error: error.message } : { success: true };
 }
 
+export async function signinCheck(data: AccountLoginInfo) {
+    const supabase = createClient();
+
+    const info = {
+        email: data.email as string,
+        password: data.password as string
+    };
+
+    const { data: user } = await supabase.auth.signInWithPassword(info);
+
+    const { data: res } = await supabase.from("User").select("activate").eq("id", user.user?.id).single();
+    const { error } = await supabase.auth.signOut();
+
+    return res?.activate;
+}
+
 export async function signin(data: AccountLoginInfo) {
     const supabase = createClient();
 
