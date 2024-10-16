@@ -1,26 +1,25 @@
-"use client";
-
-import React from "react";
-
-// 인터페이스 정의
 interface TitleInputProps {
     title: string;
-    onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setTitle: (title: string) => void; // title을 string으로 받음
 }
 
-const TitleInput = ({ title, onTitleChange }: TitleInputProps) => {
+const TitleInput = ({ title, setTitle }: TitleInputProps) => {
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value); // 입력된 값을 setTitle로 전달
+    };
+
     return (
-        <div className="mb-4">
+        <div>
             <label className="block text-lg font-medium mb-2">제목</label>
             <input
                 type="text"
                 value={title}
-                onChange={onTitleChange}
-                className="w-full p-2 border border-gray-300 rounded"
-                placeholder="글 제목을 입력하세요"
+                onChange={handleTitleChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="제목을 입력하세요."
             />
         </div>
     );
 };
 
-export default React.memo(TitleInput);
+export default TitleInput;

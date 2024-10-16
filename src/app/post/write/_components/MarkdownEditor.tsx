@@ -10,7 +10,8 @@ const Editor = dynamic(() => import("@toast-ui/react-editor").then((mod) => mod.
 
 // 인터페이스 정의
 interface MarkdownEditorProps {
-    onEditorChange: (content: string) => void;
+    content: string;
+    setContent: (content: string) => void; // content를 string 타입으로 받음
 }
 
 // forwardRef를 사용하여 ref를 받을 수 있도록 설정
@@ -26,7 +27,7 @@ const MarkdownEditor = forwardRef((props: MarkdownEditorProps, ref) => {
     const handleEditorChange = () => {
         const editorInstance = editorRef.current?.getInstance();
         if (editorInstance) {
-            props.onEditorChange(editorInstance.getMarkdown());
+            props.setContent(editorInstance.getMarkdown()); // setContent로 변경된 내용을 전달
         }
     };
 
@@ -34,7 +35,7 @@ const MarkdownEditor = forwardRef((props: MarkdownEditorProps, ref) => {
         <div>
             <label className="block text-lg font-medium mb-2">내용 작성</label>
             <Editor
-                initialValue="내용을 작성하세요."
+                initialValue={props.content} // content를 initialValue로 설정
                 previewStyle="vertical"
                 height="400px"
                 initialEditType="markdown"
