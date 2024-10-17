@@ -152,7 +152,7 @@ const PostPage = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 {Array.from({ length: pageSize }).map((_, index) => (
                     <Skeleton key={index} />
                 ))}

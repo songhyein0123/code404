@@ -1,6 +1,6 @@
 const Skeleton = () => {
     return (
-        <div className="col-span-1 border border-solid bg-white border-teal-800 rounded p-4 hover:shadow-lg animate-pulse">
+        <div className="col-span-1 border border-solid bg-[#2b2d42] border-teal-800 rounded p-4 hover:shadow-lg animate-pulse">
             <div className="flex justify-center">
                 <div className="h-24 w-24 bg-gray-300 rounded-full"></div>
             </div>

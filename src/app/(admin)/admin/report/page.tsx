@@ -72,7 +72,7 @@ const ReportedPostPage = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 {Array.from({ length: 5 }).map((_, index) => (
                     <Skeleton key={index} />
                 ))}
@@ -123,7 +123,7 @@ const ReportedPostPage = () => {
                                 <div>{post.user_id.user_name}님</div>
                                 <div>{new Date(post.created_at).toISOString().replace("T", " ").slice(0, -5)}</div>
                                 <div
-                                    className="flex rounded-3xl bg-red-600 text-white font-bold w-[150px] justify-center cursor-pointer"
+                                    className="flex rounded-3xl bg-red-600 text-white font-bold w-[150px] h-[20px] items-center	 justify-center cursor-pointer"
                                     onClick={() => openModal(post.board_id)}
                                 >
                                     누적신고된수 : {post.reportCount}건

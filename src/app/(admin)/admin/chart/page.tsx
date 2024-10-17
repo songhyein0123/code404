@@ -49,7 +49,7 @@ const UserPostChart = () => {
 
     if (isLoading)
         return (
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 <div className="w-[800px] h-[300px] bg-gray-300"></div>
             </div>
         );

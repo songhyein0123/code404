@@ -31,10 +31,14 @@ const Login = () => {
         // 서버가 2xx 상태 코드인 경우에만 성공 처리
         if (response.ok) {
             const result = await response.json();
+
             if (result.success) {
                 console.log("성공");
                 alert("성공적으로 로그인 되었습니다.");
                 navigate();
+            } else if (result.error === "비활성화된 계정임") {
+                console.log("비활성화된 계정임");
+                alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
             } else {
                 console.log("실패");
                 alert("아이디 또는 비밀번호를 확인하세요.");

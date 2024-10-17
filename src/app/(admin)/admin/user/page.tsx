@@ -123,7 +123,7 @@ const UserPage = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center flex-col min-h-screen bg-gray-100">
+            <div className="flex justify-center items-center flex-col min-h-screen bg-[#2b2d42]">
                 <div className="grid grid-cols-4 gap-4">
                     {Array.from({ length: pageSize }).map((_, index) => (
                         <Skeleton key={index} />
@@ -159,7 +159,7 @@ const UserPage = () => {
                             key={user.id}
                             className="border border-solid bg-white border-teal-800 rounded p-4 hover:shadow-lg"
                         >
-                            <div className="flex justify-center">
+                            <div className="flex justify-center h-[100px]">
                                 <Image
                                     src={user.profile_url}
                                     alt="profile"
