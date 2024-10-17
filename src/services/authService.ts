@@ -93,7 +93,7 @@ export async function signinWithProvider(path: Provider) {
     const { data } = await supabase.auth.signInWithOAuth({
         provider: path,
         options: {
-            redirectTo: "https://code404-murex.vercel.app/auth/callback"
+            redirectTo: "http://localhost:3000/auth/callback"
         }
     });
 
