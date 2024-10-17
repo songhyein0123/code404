@@ -9,7 +9,11 @@ const Navibar = async () => {
     return (
         <header className="fixed top-0 w-full">
             <nav className="flex flex-row justify-between items-center w-full h-[80px] px-16 bg-[#181F38]">
-                <div className="w-[50px] h-[50px] bg-white"></div>
+                <div className="w-[50px] h-[50px] ">
+                    <Link href="/">
+                        <img src="/images/logo.png" alt="logo" className="w-full h-full cursor-pointer" />
+                    </Link>
+                </div>
                 {user ? (
                     <RightItem user={user} />
                 ) : (
