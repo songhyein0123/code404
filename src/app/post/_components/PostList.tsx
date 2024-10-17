@@ -1,16 +1,14 @@
 import { useState } from "react";
 
-import { Post } from "./PostMockData";
 import Search from "../_components/Search";
 import SortDropdown from "./SortDropdown";
+import { Post } from "@/app/types/Post";
+import Link from "next/link";
 
 const POSTS_PER_PAGE = 5;
 
-interface PostListProps {
-    posts: Post[];
-}
-
-const PostList = ({ posts }: PostListProps) => {
+const PostList = ({ posts }: { posts: Post[] }) => {
+    console.log("posts: ", posts);
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOrder, setSortOrder] = useState<"latest" | "title">("latest"); // 정렬 상태
     const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태
@@ -21,7 +19,7 @@ const PostList = ({ posts }: PostListProps) => {
 
         // 정렬
         if (sortOrder === "latest") {
-            sorted.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         } else {
             sorted.sort((a, b) => a.title.localeCompare(b.title));
         }
@@ -30,15 +28,14 @@ const PostList = ({ posts }: PostListProps) => {
         return sorted.filter(
             (post) =>
                 post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                post.author.toLowerCase().includes(searchTerm.toLowerCase())
+                post.user.user_name.toLowerCase().includes(searchTerm.toLowerCase())
         );
     };
 
     // 전체 페이지 수 계산
     const totalPages = Math.ceil(sortedPosts().length / POSTS_PER_PAGE);
 
-
-    // 현재 페이지에 해당하는 게시글 가져오기
+    // // 현재 페이지에 해당하는 게시글 가져오기
     const currentPosts = sortedPosts().slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
 
     // 페이지 이동 함수
@@ -67,23 +64,25 @@ const PostList = ({ posts }: PostListProps) => {
 
             <div className="divide-y divide-gray-300">
                 {currentPosts.map((post) => (
-                    <div key={post.id} className="border-b-2 border-gray-500 py-4">
-                        {/* 첫 번째 줄: 제목 */}
-                        <h2 className="text-xl font-bold mb-1">{post.title}</h2>
+                    <Link key={post.board_id} href={`/posts/${post.board_id}`}>
+                        <div className="border-b-2 border-gray-500 py-4">
+                            {/* 첫 번째 줄: 제목 */}
+                            <h2 className="text-xl font-bold mb-1">{post.title}</h2>
 
-                        {/* 두 번째 줄: 작성자, 날짜, 해시태그 */}
-                        <div className="text-sm text-gray-600 flex flex-wrap items-center">
-                            <span className="mr-2">{post.author}</span>
-                            <span className="mr-2">· {post.date}</span>
-                            <div className="flex flex-wrap">
-                                {post.hashtags.map((tag, index) => (
-                                    <span key={index} className="text-blue-500 mr-2">
-                                        {tag}
-                                    </span>
-                                ))}
+                            {/* 두 번째 줄: 작성자, 날짜, 해시태그 */}
+                            <div className="text-sm text-gray-600 flex flex-wrap items-center">
+                                <span className="mr-2">{post.user.user_name}</span>
+                                <span className="mr-2">· {post.created_at}</span>
+                                <div className="flex flex-wrap">
+                                    {post.hashTag.map((tag, index) => (
+                                        <span key={index} className="text-blue-500 mr-2">
+                                            {tag.hashtag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
 
