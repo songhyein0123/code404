@@ -37,6 +37,7 @@ const Login = () => {
                 alert("성공적으로 로그인 되었습니다.");
                 navigate();
             } else if (result.error === "비활성화된 계정임") {
+                console.log("비활성화된 계정임");
                 alert("비활성화된 계정입니다. 관리자에게 문의하세요.");
             } else {
                 console.log("실패");
