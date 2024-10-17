@@ -95,7 +95,7 @@ const Login = () => {
                     type="button"
                     onClick={handleSigninWithGithub}
                 >
-                    깃허브 로그인_
+                    깃허브 로그인
                 </button>
             </div>
         </form>
