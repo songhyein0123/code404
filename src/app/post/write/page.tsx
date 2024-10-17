@@ -68,7 +68,7 @@ export default function WritePostPage() {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 mt-20">
             <TitleInput title={title} onTitleChange={handleTitleChange} />
             <HashtagInput
                 hashtags={hashtags}
