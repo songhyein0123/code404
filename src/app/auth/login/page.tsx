@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { AccountLoginInfo } from "@/app/types/Account";
-import { navigate } from "@/services/authService";
+import { navigate, signinWithProvider } from "@/services/authService";
 
 const schema: z.ZodType<AccountLoginInfo> = z.object({
     email: z.string().email({ message: "유효한 값이 아닙니다." }),
@@ -47,6 +47,10 @@ const Login = () => {
         }
     };
 
+    const handleSigninWithGithub = async () => {
+        await signinWithProvider("github");
+    };
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-[100px] flex justify-center items-center">
             <div className="w-1/4 p-[30px] flex flex-col gap-[20px] rounded-md bg-[#181F38]">
@@ -85,6 +89,13 @@ const Login = () => {
                     type="submit"
                 >
                     로그인하기
+                </button>
+                <button
+                    className="w-full bg-black text-white py-2 rounded-md"
+                    type="button"
+                    onClick={handleSigninWithGithub}
+                >
+                    깃허브 로그인
                 </button>
             </div>
         </form>
