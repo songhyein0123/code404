@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { getUserData } from "./dbService";
 import { redirect } from "next/navigation";
 import { BASE_PROFILE_URL } from "@/utils/network/config";
+import { Provider } from "@supabase/supabase-js";
 
 export async function signup(data: AccountInfo) {
     const { email, password } = data;
@@ -84,4 +85,19 @@ export async function getUser() {
 export async function navigate() {
     revalidatePath("/", "layout");
     redirect("/");
+}
+
+export async function signinWithProvider(path: Provider) {
+    const supabase = createClient();
+
+    const { data } = await supabase.auth.signInWithOAuth({
+        provider: path,
+        options: {
+            redirectTo: "https://code404-murex.vercel.app/auth/callback"
+        }
+    });
+
+    if (data.url) {
+        redirect(data.url); // use the redirect API for your server framework
+    }
 }
